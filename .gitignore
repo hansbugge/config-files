@@ -1,0 +1,9 @@
+emacs.d/elpa/*
+emacs.d/snippets*
+emacs.d/auto-save-list*
+emacs.d/var/pcache*
+emacs.d/url*
+emacs.d/ido.last
+emacs.d/smex-items
+emacs.d/SessionDesktop.el
+emacs.d/.emacs.desktop
