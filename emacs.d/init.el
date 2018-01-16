@@ -257,7 +257,8 @@
 ;; Haskell stuff
 
 (use-package haskell-mode
-  :ensure t)
+  :ensure t
+  :defer t)
 
 (use-package flymake-hlint
   :ensure t
