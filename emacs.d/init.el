@@ -380,3 +380,11 @@
 (use-package nyan-mode
   :ensure t
   :commands nyan-mode)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Idris
+
+(use-package idris-mode
+  :ensure t
+  :mode
+  "\\.idr\\'")
