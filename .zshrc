@@ -61,6 +61,7 @@ ZSH_THEME="robbyrussell"
 plugins=(
     git
     stack
+    mvn
 )
 
 source $ZSH/oh-my-zsh.sh
