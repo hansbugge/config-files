@@ -308,6 +308,10 @@
   :ensure t
   :defer t)
 
+(use-package gitignore-mode
+  :ensure t
+  :mode ("\\.gitignore"))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Cubical type theory mode
 
