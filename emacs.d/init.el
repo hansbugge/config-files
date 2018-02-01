@@ -77,6 +77,13 @@
   :bind (("C-=" . er/expand-region)
          ("C-+" . er/contract-region)))
 
+;; Highlighting symbol under point
+(use-package highlight-symbol
+  :ensure t
+  :diminish highlight-symbol-mode
+  :hook
+  (prog-mode . highlight-symbol-mode))
+
 ;; Use spaces instead of tabs, unless specified otherwise
 (setq-default indent-tabs-mode nil)
 
