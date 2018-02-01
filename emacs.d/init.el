@@ -40,6 +40,10 @@
 (dolist (hook '(prog-mode-hook text-mode-hook))
   (add-hook hook (lambda () (setq show-trailing-whitespace t))))
 
+;; Truncate long lines
+(add-hook 'prog-mode-hook
+          (lambda () (toggle-truncate-lines t)))
+
 ;; Better commenting-tool
 (use-package comment-dwim-2
   :ensure t
