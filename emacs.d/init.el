@@ -424,3 +424,8 @@
   "\\.yaml\\'")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Undo tree
+
+(use-package undo-tree
+  :ensure t
+  :commands undo-tree-mode)
