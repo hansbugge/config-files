@@ -404,3 +404,14 @@
   :ensure t
   :mode
   "\\.idr\\'")
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Javascript / React
+
+(use-package rjsx-mode
+  :ensure t
+  :mode
+  "\\.js\\'"
+  :config
+  (setq js2-strict-missing-semi-warning nil))
+
