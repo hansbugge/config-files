@@ -269,15 +269,33 @@
 
 (use-package haskell-mode
   :ensure t
-  :defer t)
+  :commands 'haskell-mode
+  :config
+  (add-hook 'haskell-mode-hook 'interactive-haskell-mode))
 
 (use-package flymake-hlint
+  :disabled
   :ensure t
   :hook (haskell-mode . flymake-hlint-load))
 
 (use-package intero
+  :disabled
   :ensure t
-  :hook (haskell-mode . intero-mode))
+  :hook (haskell-mode . intero-mode)
+  )
+
+(use-package dante
+  :ensure t
+  :after haskell-mode
+  :commands 'dante-mode
+  :init
+  (add-hook 'haskell-mode-hook 'dante-mode)
+  (add-hook 'haskell-mode-hook 'flycheck-mode)
+  :config
+  (defun my-dante-mode-hook ()
+    (flycheck-add-next-checker 'haskell-dante
+                               '(warning . haskell-hlint)))
+  (add-hook 'dante-mode-hook 'my-dante-mode-hook))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Markdown mode
