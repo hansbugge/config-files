@@ -415,3 +415,12 @@
   :config
   (setq js2-strict-missing-semi-warning nil))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Yaml
+
+(use-package yaml-mode
+  :ensure t
+  :mode
+  "\\.yaml\\'")
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
