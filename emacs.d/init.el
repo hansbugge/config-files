@@ -361,7 +361,8 @@
 
 (use-package ws-butler
   :ensure t
-  :hook ((haskell-mode elm-mode idris-mode csl-mode) . ws-butler-mode))
+  :diminish ws-butler-mode
+  :hook (prog-mode . ws-butler-mode))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; company
