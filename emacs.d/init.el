@@ -304,7 +304,8 @@
 
 (use-package markdown-mode
   :ensure t
-  :mode "\\.md\\'")
+  :mode "\\.md\\'"
+  :init (setq markdown-command "pandoc"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Multiple cursors
