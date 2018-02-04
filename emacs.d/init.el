@@ -451,3 +451,10 @@
 (use-package undo-tree
   :ensure t
   :commands undo-tree-mode)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Fill column indicator
+
+(use-package fill-column-indicator
+  :ensure t
+  :commands fci-mode)
