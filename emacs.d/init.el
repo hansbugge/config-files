@@ -289,8 +289,10 @@
   :after haskell-mode
   :commands 'dante-mode
   :init
-  (add-hook 'haskell-mode-hook 'dante-mode)
-  (add-hook 'haskell-mode-hook 'flycheck-mode)
+  (defun my-dante-haskell-mode-hook ()
+    (dante-mode 1)
+    (flycheck-mode 1))
+  (add-hook 'haskell-mode-hook 'my-dante-haskell-mode-hook)
   :config
   (defun my-dante-mode-hook ()
     (flycheck-add-next-checker 'haskell-dante
