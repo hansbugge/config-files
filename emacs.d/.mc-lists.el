@@ -66,6 +66,7 @@
         sgml-maybe-name-self
         sgml-slash
         smex
+        transpose-sexps
         yas-expand
         ))
 
