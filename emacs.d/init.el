@@ -24,8 +24,23 @@
 ;; Libraries
 (use-package diminish :ensure t :demand t)
 
+;; Subtle bell function
+;; From https://www.emacswiki.org/emacs/AlarmBell#toc3
+(setq ring-bell-function
+      (lambda ()
+        (let ((orig-fg (face-foreground 'mode-line)))
+          (set-face-foreground 'mode-line "#F2804F")
+          (run-with-idle-timer
+           0.1
+           nil
+           (lambda (fg) (set-face-foreground 'mode-line fg))
+           orig-fg))))
+
 ;; Do not show the GNU splash screen
 (setq inhibit-startup-message t)
+
+;; Opposite of other-windows
+(global-set-key (kbd "C-x O") (lambda () (interactive) (other-window -1)))
 
 ;; Show matching parentheses
 (show-paren-mode t)
@@ -87,6 +102,37 @@
 ;; Use spaces instead of tabs, unless specified otherwise
 (setq-default indent-tabs-mode nil)
 
+;; Indentation helpers
+
+(defun my-setup-indent (n)
+  ;; java/c/c++
+  (setq-local standard-indent n)
+  (setq-local c-basic-offset n)
+  ;; web development
+  (setq-local js-indent-level n) ; js-mode
+  (setq-local sgml-basic-offset n) ; sgml-mode (used for JSX)
+  (setq-local web-mode-attr-indent-offset n) ; web-mode
+  (setq-local web-mode-code-indent-offset n) ; web-mode, js code in html file
+  (setq-local web-mode-css-indent-offset n) ; web-mode, css in html file
+  (setq-local web-mode-markup-indent-offset n) ; web-mode, html tag in html file
+  (setq-local web-mode-sql-indent-offset n) ; web-mode
+  (setq-local web-mode-attr-value-indent-offset n) ; web-mode
+  (setq-local typescript-indent-level n) ; typescript-mode
+  (setq-local css-indent-offset n) ; css-mode
+  (setq-local tide-format-options `(:indentSize ,n :tabSize ,n))
+  (setq-local sh-basic-offset n) ; shell scripts
+  (setq-local sh-indentation n))
+
+(defun setup-indent-with-two-spaces ()
+  (interactive)
+  (my-setup-indent 2)
+  (message "Tab size set to 2"))
+
+(defun setup-indent-with-four-spaces ()
+  (interactive)
+  (my-setup-indent 4)
+  (message "Tab size set to 4"))
+
 ;; Highlight version control changes in the fringe
 (use-package diff-hl
   :ensure t
@@ -123,7 +169,7 @@
       ;;; Emacs running in MacOS GUI
       (when (eq window-system 'mac)
         ;; Allow scrolling while doing isearch (buggy)
-        (put 'mac-mwheel-scroll 'isearch-scroll t)
+        ;; (put 'mac-mwheel-scroll 'isearch-scroll t)
         (setq isearch-allow-scroll t)
 
         ;; Meta is option key
@@ -162,7 +208,9 @@
 (use-package fill-paragraph
   :load-path "lisp"
   :bind (:map LaTeX-mode-map
-              ("M-q" . ales/fill-paragraph)))
+         ("M-q" . ales/fill-paragraph)
+         :map markdown-mode-map
+         ("M-q" . ales/fill-paragraph )))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Agda
@@ -245,6 +293,15 @@
 
 (add-hook 'text-mode-hook 'turn-on-visual-line-mode)
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Visual fill column
+
+(use-package visual-fill-column
+  :ensure t
+  :defer t
+  :config
+  (setq-default fill-column 120))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Flyspell
 
@@ -298,6 +355,11 @@
     (flycheck-add-next-checker 'haskell-dante
                                '(warning . haskell-hlint)))
   (add-hook 'dante-mode-hook 'my-dante-mode-hook))
+
+;; ATtempt to Repair At Point / jyp
+(use-package attrap
+  :ensure t
+  :after dante-mode)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Markdown mode
@@ -384,7 +446,8 @@
 (use-package ws-butler
   :ensure t
   :diminish ws-butler-mode
-  :hook (prog-mode . ws-butler-mode))
+  :hook ((prog-mode . ws-butler-mode)
+         (markdown-mode . ws-butler-mode)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; company
@@ -393,6 +456,7 @@
   :ensure t
   :defer 5 ;; load after 5 seconds of idle time
   :config (global-company-mode t)
+  :bind ("H-C-c" . 'company-manual-begin)
   :diminish company-mode)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -400,7 +464,7 @@
 
 (use-package csl-mode
   :load-path
-  "~/deon-dsl/csl-syntax-highlighting/"
+  "~/deon-dsl/csl-syntax-highlighting/emacs/"
   :mode
   "\\.csl\\'")
 
@@ -435,7 +499,33 @@
   :mode
   "\\.js\\'"
   :config
-  (setq js2-strict-missing-semi-warning nil))
+  (setq js2-strict-missing-semi-warning nil)
+  (add-hook 'js-mode-hook 'setup-indent-with-four-spaces))
+
+(use-package typescript-mode
+  :ensure t
+  :mode
+  "\\.ts\\'")
+
+(use-package web-mode
+  :after typescript-mode
+  :ensure t
+  :mode
+  "\\.tsx\\'"
+  :config
+  (defun my-web-mode-hook ()
+    (setq web-mode-enable-auto-quoting nil)
+    (setq indent-line-function 'typescript-indent-line))
+  (add-hook 'web-mode-hook 'my-web-mode-hook))
+
+
+(use-package tide
+  :ensure t
+  :hook
+  ((typescript-mode . tide-mode) (web-mode . tide-mode))
+  :config
+  (flycheck-add-mode 'typescript-tslint 'web-mode)
+  (add-hook 'tide-mode-hook 'flycheck-mode))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Yaml

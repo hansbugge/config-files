@@ -70,10 +70,16 @@
  '(haskell-interactive-popup-errors nil)
  '(package-selected-packages
    (quote
-    (flycheck-elm nyan-mode kotlin-mode ws-butler elm-mode magit neotree multiple-cursors markdown-mode intero flymake-hlint haskell-mode solarized-theme diff-hl expand-region smex ido-vertical-mode flychdeck-elm)))
+    (attrap attrap-attrap web-mode tide typescript-mode visual-fill-column longlines-mode fill-column-indicator flycheck-elm nyan-mode kotlin-mode ws-butler elm-mode magit neotree multiple-cursors markdown-mode intero flymake-hlint haskell-mode solarized-theme diff-hl expand-region smex ido-vertical-mode flychdeck-elm)))
  '(safe-local-variable-values
    (quote
-    ((haskell-process-use-ghci . t)
+    ((dante-target . "dil-service:lib")
+     (dante-target . "dil-service:test:dil-service-test dil-service:lib")
+     (dante-target . "dil-service:lib dil-service:test:dil-service-test")
+     (dante-target . "dil-service:test:dil-service-test")
+     (dante-project-root . "~/deon-dsl/dil-service")
+     (dante-target . "test:dil-service-test")
+     (haskell-process-use-ghci . t)
      (haskell-indent-spaces . 4)
      (preview-scale-function . 1.2)
      (eval agda-input-add-translations
@@ -98,4 +104,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(agda2-highlight-datatype-face ((t (:foreground "deep sky blue"))))
+ '(agda2-highlight-function-face ((t (:foreground "deep sky blue"))))
+ '(agda2-highlight-primitive-face ((t (:foreground "deep sky blue"))))
+ '(agda2-highlight-primitive-type-face ((t (:foreground "deep sky blue")))))

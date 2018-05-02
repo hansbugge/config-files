@@ -21,7 +21,7 @@ Otherwise split the current paragraph into one sentence per line."
               (just-one-space) ;; leaves only one space, point is after it
               (delete-char -1) ;; delete the space
               (newline)        ;; and insert a newline
-              (LaTeX-indent-line) ;; I only use this in combination with late, so this makes sense
+              ;; (LaTeX-indent-line) ;; I only use this in combination with late, so this makes sense
               ))))
     ;; otherwise do ordinary fill paragraph
     (fill-paragraph P)))
