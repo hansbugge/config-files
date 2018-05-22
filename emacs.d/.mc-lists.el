@@ -49,6 +49,7 @@
         kill-region
         kill-visual-line
         markdown-exdent-or-delete
+        markdown-outdent-or-delete
         mouse-minor-mode-menu
         mouse-yank-primary
         move-line-down
@@ -63,10 +64,13 @@
         proof-electric-terminator
         reftex-label
         reindent-then-newline-and-indent
+        rjsx-delete-creates-full-tag
         sgml-maybe-name-self
         sgml-slash
         smex
         transpose-sexps
+        typescript-insert-and-autoconvert-to-template
+        typescript-insert-and-indent
         yas-expand
         ))
 
@@ -82,6 +86,7 @@
         describe-key
         eval-defun
         eval-last-sexp
+        ido-find-file
         ido-switch-buffer
         idris-load-file
         mac-mwheel-scroll
