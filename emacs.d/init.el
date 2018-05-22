@@ -146,8 +146,21 @@
   :if window-system
   :config
   (load-theme 'solarized-dark))
-;; Execute the following sexp to disable all themes:
-;; (apply 'disable-theme custom-enabled-themes)
+
+(defun hans/switch-theme (theme)
+  "Disable all themes, then load THEME"
+  (apply 'disable-theme custom-enabled-themes)
+  (load-theme theme))
+
+(defun lights-on ()
+  "Switch to light theme"
+  (interactive)
+  (hans/switch-theme 'solarized-light))
+
+(defun lights-off ()
+  "Switch to dark theme"
+  (interactive)
+  (hans/switch-theme 'solarized-dark))
 
 ;; Narrowing
 (put 'narrow-to-page 'disabled nil)
