@@ -84,7 +84,8 @@
 ;; Smex adds ido to M-x
 (use-package smex
   :ensure t
-  :bind (("M-x" . smex)))
+  :bind (("M-x" . smex)
+         ("M-X" . smex-major-mode-commands)))
 
 ;; Expand region
 (use-package expand-region
