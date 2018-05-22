@@ -103,3 +103,5 @@ alias emacs="/Applications/Emacs.app/Contents/MacOS/Emacs -nw"
 alias gemacs="open -a /Applications/Emacs.app/"
 alias new-gemacs="open -n -a /Applications/Emacs.app/"
 alias grom="git rebase origin/master"
+
+export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:/Users/hansbugge/.local/bin:$PATH"
