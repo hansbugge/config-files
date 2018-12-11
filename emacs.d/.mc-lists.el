@@ -48,6 +48,7 @@
         keyboard-escape-quit
         kill-region
         kill-visual-line
+        mark-sexp
         markdown-exdent-or-delete
         markdown-outdent-or-delete
         mouse-minor-mode-menu
@@ -57,6 +58,7 @@
         org-cycle
         org-delete-char
         org-end-of-line
+        org-force-self-insert
         org-kill-line
         org-metaright
         org-self-insert-command
@@ -71,6 +73,8 @@
         transpose-sexps
         typescript-insert-and-autoconvert-to-template
         typescript-insert-and-indent
+        yaml-electric-backspace
+        yaml-electric-dash-and-dot
         yas-expand
         ))
 
@@ -89,6 +93,7 @@
         ido-find-file
         ido-switch-buffer
         idris-load-file
+        intero-repl-load
         mac-mwheel-scroll
         mouse-buffer-menu
         mouse-drag-mode-line
@@ -103,5 +108,6 @@
         query-replace
         raise-next-frame
         scheme-send-buffer-and-go
+        smerge-keep-upper
         toggle-input-method
         ))

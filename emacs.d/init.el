@@ -68,6 +68,10 @@
 (setq custom-file "~/.emacs.d/custom-gnu.el")
 (load custom-file)
 
+;; Store all backup files (filenames ending in tilde) in the tmp directory
+(setq backup-directory-alist
+      `((".*" . ,temporary-file-directory)))
+
 ;; ido-completion
 (icomplete-mode 1)
 (setq ido-enable-flex-matching t)
@@ -80,6 +84,17 @@
 
 ;; The only thing from cua-mode I want:
 (global-set-key (kbd "<C-return>") 'cua-rectangle-mark-mode)
+
+;; Attempt to avoid crash bug in version
+;; GNU Emacs 26.1 (build 1, x86_64-apple-darwin13.4.0, Carbon Version 157 AppKit 1265.21) of 2018-06-18
+;; <C-tab> and <C-S-tab> were set to `mac-next-tab-or-toggle-tab-bar` and `mac-previous-tab-or-toggle-tab-bar`
+;; respectively, which I suspect has been leading to the "bear trap for: <rdar://problem/20935868>" crash.
+
+(global-unset-key (kbd "<C-tab>"))
+(global-unset-key (kbd "<C-S-tab>"))
+
+;; Indicate empty lines (end of buffer)
+(setq-default indicate-empty-lines t)
 
 ;; Smex adds ido to M-x
 (use-package smex
@@ -98,7 +113,9 @@
   :ensure t
   :diminish highlight-symbol-mode
   :hook
-  (prog-mode . highlight-symbol-mode))
+  (prog-mode . highlight-symbol-mode)
+  :config
+  (setq highlight-symbol-idle-delay 0.4))
 
 ;; Use spaces instead of tabs, unless specified otherwise
 (setq-default indent-tabs-mode nil)
@@ -121,8 +138,7 @@
   (setq-local typescript-indent-level n) ; typescript-mode
   (setq-local css-indent-offset n) ; css-mode
   (setq-local tide-format-options `(:indentSize ,n :tabSize ,n))
-  (setq-local sh-basic-offset n) ; shell scripts
-  (setq-local sh-indentation n))
+  (setq-local sh-basic-offset n)) ; shell scripts
 
 (defun setup-indent-with-two-spaces ()
   (interactive)
@@ -140,13 +156,6 @@
   :config
   (global-diff-hl-mode 1))
 
-;; Solarized color theme
-(use-package solarized-theme
-  :ensure t
-  :if window-system
-  :config
-  (load-theme 'solarized-dark))
-
 (defun hans/switch-theme (theme)
   "Disable all themes, then load THEME"
   (apply 'disable-theme custom-enabled-themes)
@@ -161,6 +170,18 @@
   "Switch to dark theme"
   (interactive)
   (hans/switch-theme 'solarized-dark))
+
+;; Solarized color theme
+(use-package solarized-theme
+  :ensure t
+  :if window-system
+  :config
+  (load-theme 'solarized-dark)
+  ;; For some reason solarized does not set
+  ;; "company-tooltip-selection".  This is a temporary hack until that
+  ;; is solved.
+  (custom-set-faces '(company-tooltip-selection
+                      ((t (:foreground "#00736F" :background "#69CABF"))))))
 
 ;; Narrowing
 (put 'narrow-to-page 'disabled nil)
@@ -350,12 +371,16 @@
   :hook (haskell-mode . flymake-hlint-load))
 
 (use-package intero
-  :disabled
   :ensure t
   :hook (haskell-mode . intero-mode)
   )
 
+(use-package helm-hoogle
+  :ensure t
+  :after haskell-mode)
+
 (use-package dante
+  :disabled
   :ensure t
   :after haskell-mode
   :commands 'dante-mode
@@ -434,18 +459,20 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Elm
 
+(use-package flycheck-elm
+  :ensure t
+  :after (flycheck))
+
 (use-package elm-mode
   :ensure t
+  :after (flycheck-elm)
   :mode "\\.elm\\'"
   :init
   (defun my-elm-mode-hook ()
+    (flycheck-elm-setup)
     (setq company-backends '(company-elm))
     (elm-oracle-setup-completion))
   (add-hook 'elm-mode-hook 'my-elm-mode-hook))
-
-(use-package flycheck-elm
-  :ensure t
-  :after (flycheck elm-mode))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Flycheck
@@ -522,7 +549,6 @@
   "\\.ts\\'")
 
 (use-package web-mode
-  :after typescript-mode
   :ensure t
   :mode
   "\\.tsx\\'"
@@ -538,8 +564,11 @@
   :hook
   ((typescript-mode . tide-mode) (web-mode . tide-mode))
   :config
-  (flycheck-add-mode 'typescript-tslint 'web-mode)
-  (add-hook 'tide-mode-hook 'flycheck-mode))
+  (defun my-tide-mode-hook ()
+    (setup-indent-with-two-spaces)
+    (flycheck-add-mode 'typescript-tslint 'web-mode)
+    (flycheck-mode 1))
+  (add-hook 'tide-mode-hook 'my-tide-mode-hook))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Yaml
@@ -548,6 +577,13 @@
   :ensure t
   :mode
   "\\.yaml\\'")
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Dhall
+(use-package dhall-mode
+  :ensure t
+  :mode
+  "\\.dhall\\'")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Undo tree
@@ -562,3 +598,53 @@
 (use-package fill-column-indicator
   :ensure t
   :commands fci-mode)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; God mode
+(use-package god-mode
+  :ensure t
+  :bind ("<escape>" . god-local-mode)
+  :defines saved-god-mode-line-faces
+  :config
+  (defun god-mode-line-on ()
+    "Alter the mode-line display. Intended to be used when in `god-mode'."
+    (setq-local saved-god-mode-line-faces
+                (cons (face-attribute 'mode-line :background)
+                      (face-attribute 'mode-line :foreground)))
+    (set-face-foreground 'mode-line "#b58900")
+    (message "Entering god mode..."))
+  (defun god-mode-line-off ()
+    "Revert back to ordinary mode-line display."
+    (when saved-god-mode-line-faces
+      (set-face-background 'mode-line (car saved-god-mode-line-faces))
+      (set-face-foreground 'mode-line (cdr saved-god-mode-line-faces)))
+    (message "Exiting god mode..."))
+  (add-hook 'god-mode-enabled-hook 'god-mode-line-on)
+  (add-hook 'god-mode-disabled-hook 'god-mode-line-off)
+  (define-key god-local-mode-map (kbd ".") 'repeat))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; fsharp-mode
+(use-package fsharp-mode
+  :ensure t
+  :mode "\\.fs\\'")
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; eglot (Emacs Polyglot)
+
+(use-package eglot
+  :ensure t
+  :pin melpa
+  :config
+  (add-to-list
+   'eglot-server-programs
+   '(csl-mode . ("language-server"
+                 "--csl-std-lib"
+                 "/Users/hansbugge/deon-dsl/cslstdlib/StdLib.csl"))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; sml-mode
+
+(use-package sml-mode
+  :ensure t
+  :mode "\\.sml\\'")
