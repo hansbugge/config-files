@@ -62,6 +62,7 @@ plugins=(
     git
     stack
     mvn
+    docker
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -99,9 +100,12 @@ alias ls="ls --color=auto -G"
 alias s="cd .."
 alias oa="open -a"
 alias tree="tree -C"
+alias emacs25="/Applications/Emacs25.app/Contents/MacOS/Emacs -nw"
+alias gemacs25="open -a /Applications/Emacs25.app/"
+alias new-gemacs25="open -n -a /Applications/Emacs25.app/"
 alias emacs="/Applications/Emacs.app/Contents/MacOS/Emacs -nw"
 alias gemacs="open -a /Applications/Emacs.app/"
 alias new-gemacs="open -n -a /Applications/Emacs.app/"
 alias grom="git rebase origin/master"
 
-export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:/Users/hansbugge/.local/bin:$PATH"
+export PATH="/usr/local/opt/coreutils/libexec/gnubin:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:/Users/hansbugge/.local/bin:$PATH"
