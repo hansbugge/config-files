@@ -63,12 +63,14 @@
         org-metaright
         org-self-insert-command
         org-yank
+        picture-self-insert
         proof-electric-terminator
         reftex-label
         reindent-then-newline-and-indent
         rjsx-delete-creates-full-tag
         sgml-maybe-name-self
         sgml-slash
+        sh-assignment
         smex
         transpose-sexps
         typescript-insert-and-autoconvert-to-template
