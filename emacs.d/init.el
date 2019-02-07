@@ -429,7 +429,13 @@
 (use-package magit
   :ensure t
   :defer t
-  :bind (("C-x g" . magit-status)))
+  :bind (("C-x g" . magit-status))
+  :config
+  (defun magit-reset-master-to-origin ()
+    (interactive)
+    (magit-branch-reset "master" "origin/master"))
+  (magit-define-popup-action 'magit-fetch-popup ?x
+    "reset master to origin/master" 'magit-reset-master-to-origin))
 
 (use-package gitignore-mode
   :ensure t
@@ -644,7 +650,6 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; sml-mode
-
 (use-package sml-mode
   :ensure t
   :mode "\\.sml\\'")
