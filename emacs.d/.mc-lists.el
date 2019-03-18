@@ -13,6 +13,7 @@
         TeX-insert-dollar
         TeX-insert-quote
         TeX-insert-sub-or-superscript
+        ales/fill-paragraph
         aquamacs-backward-kill-word
         aquamacs-kill-word
         aquamacs-left-char
@@ -37,6 +38,7 @@
         end-of-visual-line
         eri-indent
         eri-indent-reverse
+        fill-paragraph
         forward-sexp
         hans/wrap
         haskell-indentation-common-electric-command
@@ -44,7 +46,9 @@
         haskell-indentation-delete-char
         idris-delete-forward-char
         ignore
+        increment-number-at-point
         indent-for-tab-command
+        indent-rigidly
         keyboard-escape-quit
         kill-region
         kill-visual-line
@@ -67,9 +71,15 @@
         proof-electric-terminator
         reftex-label
         reindent-then-newline-and-indent
+        repeat
         rjsx-delete-creates-full-tag
+        sgml-close-tag
+        sgml-delete-tag
         sgml-maybe-name-self
+        sgml-skip-tag-backward
+        sgml-skip-tag-forward
         sgml-slash
+        sgml-tag
         sh-assignment
         smex
         transpose-sexps
@@ -97,6 +107,7 @@
         idris-load-file
         intero-repl-load
         mac-mwheel-scroll
+        mark-whole-buffer
         mouse-buffer-menu
         mouse-drag-mode-line
         mouse-drag-secondary
