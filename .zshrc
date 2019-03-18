@@ -108,4 +108,4 @@ alias gemacs="open -a /Applications/Emacs.app/"
 alias new-gemacs="open -n -a /Applications/Emacs.app/"
 alias grom="git rebase origin/master"
 
-export PATH="/usr/local/opt/texinfo/bin:/usr/local/opt/coreutils/libexec/gnubin:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:/Users/hansbugge/.local/bin:$PATH"
+export PATH="/usr/local/opt/texinfo/bin:/usr/local/opt/gnu-sed/libexec/gnubin:/usr/local/opt/findutils/libexec/gnubin:/usr/local/opt/coreutils/libexec/gnubin:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:/Users/hansbugge/.local/bin:$PATH"
