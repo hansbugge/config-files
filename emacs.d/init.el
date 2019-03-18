@@ -434,7 +434,8 @@
 (use-package multiple-cursors
   :ensure t
   :bind (("C->" . mc/mark-next-like-this)
-         ("C-<" . mc/unmark-next-like-this)))
+         ("C-<" . mc/unmark-next-like-this)
+         ("C-M->" . mc/skip-to-next-like-this)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Neotree
@@ -567,7 +568,8 @@
   "\\.js\\'"
   :config
   (setq js2-strict-missing-semi-warning nil)
-  (add-hook 'js-mode-hook 'setup-indent-with-four-spaces))
+  ;; (add-hook 'js-mode-hook 'setup-indent-with-four-spaces)
+  )
 
 (use-package typescript-mode
   :ensure t
@@ -581,7 +583,8 @@
   :config
   (defun my-web-mode-hook ()
     (setq web-mode-enable-auto-quoting nil)
-    (setq indent-line-function 'typescript-indent-line))
+    ;; (setq indent-line-function 'typescript-indent-line)
+    )
   (add-hook 'web-mode-hook 'my-web-mode-hook))
 
 
