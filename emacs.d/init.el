@@ -455,8 +455,11 @@
   (defun magit-reset-master-to-origin ()
     (interactive)
     (magit-branch-reset "master" "origin/master"))
-  (magit-define-popup-action 'magit-fetch-popup ?x
-    "reset master to origin/master" 'magit-reset-master-to-origin))
+  ;;;; For older versions of magit that used magit-popup instead of transient:
+  ;; (magit-define-popup-action 'magit-fetch-popup ?x
+  ;;   "reset master to origin/master" 'magit-reset-master-to-origin)
+  (transient-append-suffix 'magit-fetch "m"
+    '("x" "reset master to origin/master" magit-reset-master-to-origin)))
 
 (use-package gitignore-mode
   :ensure t
