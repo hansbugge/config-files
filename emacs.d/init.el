@@ -676,3 +676,18 @@
 (use-package sml-mode
   :ensure t
   :mode "\\.sml\\'")
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; restclient-mode
+
+(use-package restclient
+  :ensure t
+  :commands 'restclient-mode
+  :init
+  (defun my-restclient-mode-hook ()
+    (setq-local company-backends '(company-restclient)))
+  (add-hook 'restclient-mode-hook 'my-restclient-mode-hook))
+
+(use-package company-restclient
+  :ensure t
+  :after restclient)
