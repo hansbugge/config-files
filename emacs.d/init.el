@@ -100,7 +100,8 @@
 (use-package smex
   :ensure t
   :bind (("M-x" . smex)
-         ("M-X" . smex-major-mode-commands)))
+         ("M-X" . smex-major-mode-commands)
+         ("C-M-x" . execute-extended-command)))
 
 ;; Expand region
 (use-package expand-region
