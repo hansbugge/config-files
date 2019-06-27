@@ -720,3 +720,10 @@
 (use-package htmlize
   :ensure t)
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Editor config
+
+(use-package editorconfig
+  :ensure t
+  :config
+  (editorconfig-mode 1))
