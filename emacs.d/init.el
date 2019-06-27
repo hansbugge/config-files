@@ -601,9 +601,11 @@
   ((typescript-mode . tide-mode) (web-mode . tide-mode))
   :config
   (defun my-tide-mode-hook ()
-    (setup-indent-with-two-spaces)
-    (flycheck-add-mode 'typescript-tslint 'web-mode)
+    ;; (setup-indent-with-two-spaces)
+    ;; (flycheck-add-mode 'typescript-tslint 'web-mode)
     (flycheck-mode 1))
+  (flycheck-add-next-checker 'typescript-tide 'javascript-eslint)
+  (flycheck-add-next-checker 'tsx-tide 'javascript-eslint)
   (add-hook 'tide-mode-hook 'my-tide-mode-hook))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
