@@ -704,3 +704,13 @@
 (use-package company-restclient
   :ensure t
   :after restclient)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Gradle
+
+(use-package groovy-mode
+  :ensure t)
+
+(use-package gradle-mode
+  :ensure t)
+
