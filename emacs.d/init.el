@@ -385,9 +385,12 @@
 
 (use-package haskell-mode
   :ensure t
-  :commands 'haskell-mode
-  :config
-  (add-hook 'haskell-mode-hook 'interactive-haskell-mode))
+  :mode (("\\.hs\\'" . haskell-mode)
+         ("\\.lhs\\'" . literate-haskell-mode)
+         ("\\.cabal\\'" . haskell-cabal-mode))
+  ;; :config
+  ;; (add-hook 'haskell-mode-hook 'interactive-haskell-mode)
+  )
 
 (use-package flymake-hlint
   :disabled
