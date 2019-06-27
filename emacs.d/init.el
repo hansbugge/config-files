@@ -714,3 +714,9 @@
 (use-package gradle-mode
   :ensure t)
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Htmlize
+
+(use-package htmlize
+  :ensure t)
+
