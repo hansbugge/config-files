@@ -85,6 +85,10 @@
 ;; The only thing from cua-mode I want:
 (global-set-key (kbd "<C-return>") 'cua-rectangle-mark-mode)
 
+;; Shortcuts to certain files using registers
+;; E.g. `C-x r j e` for visiting init.el
+(set-register ?e '(file . "~/.emacs.d/init.el"))
+
 ;; Attempt to avoid crash bug in version
 ;; GNU Emacs 26.1 (build 1, x86_64-apple-darwin13.4.0, Carbon Version 157 AppKit 1265.21) of 2018-06-18
 ;; <C-tab> and <C-S-tab> were set to `mac-next-tab-or-toggle-tab-bar` and `mac-previous-tab-or-toggle-tab-bar`
