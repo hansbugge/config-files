@@ -695,6 +695,7 @@
 (use-package restclient
   :ensure t
   :commands 'restclient-mode
+  :mode "\\.rest\\'"
   :init
   (defun my-restclient-mode-hook ()
     (setq-local company-backends '(company-restclient)))
