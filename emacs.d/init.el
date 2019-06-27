@@ -219,7 +219,7 @@
       (tool-bar-mode 0)
 
       ;; Font
-      (set-face-attribute 'default nil :height 140)
+      (set-face-attribute 'default nil :height 168) ;; 140 * 1.2 = 168
 
       ;; Highlight current line
       (global-hl-line-mode 1)
