@@ -76,6 +76,7 @@
  '(elm-compile-arguments (quote ("--yes" "--warn" "--output=target/elm.js")))
  '(fci-rule-color "#eee8d5")
  '(global-auto-revert-mode t)
+ '(gradle-mode nil)
  '(haskell-interactive-popup-errors nil)
  '(highlight-changes-colors (quote ("#d33682" "#6c71c4")))
  '(highlight-symbol-foreground-color "#586e75")
@@ -102,12 +103,13 @@
     ("#dc322f" "#cb4b16" "#b58900" "#546E00" "#B4C342" "#00629D" "#2aa198" "#d33682" "#6c71c4")))
  '(package-selected-packages
    (quote
-    (company-restclient restclient restclient-mode dhall-mode sml-mode eglot fsharp-mode god-mode helm-hoogle dockerfile-mode attrap attrap-attrap web-mode tide typescript-mode visual-fill-column longlines-mode fill-column-indicator flycheck-elm nyan-mode kotlin-mode ws-butler elm-mode magit neotree multiple-cursors markdown-mode intero flymake-hlint haskell-mode solarized-theme diff-hl expand-region smex ido-vertical-mode flychdeck-elm)))
+    (editorconfig htmlize htlmize groovy-mode gradle-mode gradle company-restclient restclient restclient-mode dhall-mode sml-mode eglot fsharp-mode god-mode helm-hoogle dockerfile-mode attrap attrap-attrap web-mode tide typescript-mode visual-fill-column longlines-mode fill-column-indicator flycheck-elm nyan-mode kotlin-mode ws-butler elm-mode magit neotree multiple-cursors markdown-mode intero flymake-hlint haskell-mode solarized-theme diff-hl expand-region smex ido-vertical-mode flychdeck-elm)))
  '(pos-tip-background-color "#eee8d5")
  '(pos-tip-foreground-color "#586e75")
  '(safe-local-variable-values
    (quote
-    ((intero-targets)
+    ((intero-targets "language-lib:lib" "language-lib:test:dil-service-test")
+     (intero-targets)
      (intero-targets "language-lib:test:dil-service-test")
      (TeX-master . "../thesis")
      (intero-targets "dil-service:test:dil-service-test")

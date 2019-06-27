@@ -26,10 +26,12 @@
         autopair-skip-close-maybe
         backward-sexp
         beginning-of-buffer
+        comment-dwim-2
         cua-cut-region
         cua-delete-region
         cua-exchange-point-and-mark
         cua-paste
+        cua-resize-rectangle-left
         dabbrev-expand
         dired-flag-file-deletion
         electric-indent-just-newline
@@ -64,6 +66,7 @@
         org-end-of-line
         org-force-self-insert
         org-kill-line
+        org-metaleft
         org-metaright
         org-self-insert-command
         org-yank
@@ -85,6 +88,7 @@
         transpose-sexps
         typescript-insert-and-autoconvert-to-template
         typescript-insert-and-indent
+        widget-button-press
         yaml-electric-backspace
         yaml-electric-dash-and-dot
         yas-expand
