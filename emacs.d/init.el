@@ -516,7 +516,9 @@
 
 (use-package flycheck
   :ensure t
-  :hook (elm-mode . flycheck-mode))
+  :hook ((elm-mode . flycheck-mode)
+         (typescript-mode . flycheck-mode)
+         (web-mode . flycheck-mode)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; ws-butler
@@ -533,7 +535,10 @@
 (use-package company
   :ensure t
   :defer 5 ;; load after 5 seconds of idle time
-  :config (global-company-mode t)
+  :config
+  (global-company-mode t)
+  ;; aligns annotation to the right hand side
+  (setq company-tooltip-align-annotations t)
   :bind ("H-C-c" . 'company-manual-begin)
   :diminish company-mode)
 
@@ -597,19 +602,17 @@
     )
   (add-hook 'web-mode-hook 'my-web-mode-hook))
 
-
 (use-package tide
   :ensure t
-  :hook
-  ((typescript-mode . tide-mode) (web-mode . tide-mode))
-  :config
+  :hook ((typescript-mode . tide-setup)
+         (web-mode . tide-setup))
+  :init
   (defun my-tide-mode-hook ()
-    ;; (setup-indent-with-two-spaces)
-    ;; (flycheck-add-mode 'typescript-tslint 'web-mode)
-    (flycheck-mode 1))
+    (tide-hl-identifier-mode 1))
+  (add-hook 'tide-mode-hook 'my-tide-mode-hook)
+  :config
   (flycheck-add-next-checker 'typescript-tide 'javascript-eslint)
-  (flycheck-add-next-checker 'tsx-tide 'javascript-eslint)
-  (add-hook 'tide-mode-hook 'my-tide-mode-hook))
+  (flycheck-add-next-checker 'tsx-tide 'javascript-eslint))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Yaml
@@ -726,4 +729,5 @@
 (use-package editorconfig
   :ensure t
   :config
-  (editorconfig-mode 1))
+  (editorconfig-mode 1)
+  :diminish editorconfig-mode)
