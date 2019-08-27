@@ -772,3 +772,8 @@
 (use-package flycheck-clj-kondo
   :ensure t)
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Dired+
+
+(use-package dired+
+  :load-path "lisp")
