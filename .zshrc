@@ -63,6 +63,7 @@ plugins=(
     stack
     mvn
     docker
+    gradle
 )
 
 source $ZSH/oh-my-zsh.sh
