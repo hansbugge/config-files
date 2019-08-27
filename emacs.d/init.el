@@ -388,7 +388,9 @@
   :mode (("\\.hs\\'" . haskell-mode)
          ("\\.lhs\\'" . literate-haskell-mode)
          ("\\.cabal\\'" . haskell-cabal-mode))
-  ;; :config
+  :config
+  ;; ignore the stack-generated dump-hi files when browsing with C-x C-f
+  (add-to-list 'ido-ignore-files "\\.dump-hi\\'")
   ;; (add-hook 'haskell-mode-hook 'interactive-haskell-mode)
   )
 
@@ -599,6 +601,7 @@
   (defun my-web-mode-hook ()
     (setq web-mode-enable-auto-quoting nil)
     ;; (setq indent-line-function 'typescript-indent-line)
+    (highlight-symbol-mode 0)
     )
   (add-hook 'web-mode-hook 'my-web-mode-hook))
 
@@ -613,6 +616,16 @@
   :config
   (flycheck-add-next-checker 'typescript-tide 'javascript-eslint)
   (flycheck-add-next-checker 'tsx-tide 'javascript-eslint))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Prettier
+
+(use-package prettier-js
+  :ensure t
+  :commands prettier-js
+  :config
+  (setq prettier-js-command "npx")
+  (setq prettier-js-args '("prettier")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Yaml
