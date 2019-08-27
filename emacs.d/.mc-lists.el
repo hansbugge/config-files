@@ -26,7 +26,12 @@
         autopair-skip-close-maybe
         backward-sexp
         beginning-of-buffer
+        cider-eval-defun-at-point
+        cider-eval-last-sexp
+        clojure-thread-last-all
+        clojure-unwind
         comment-dwim-2
+        company-manual-begin
         cua-cut-region
         cua-delete-region
         cua-exchange-point-and-mark
@@ -34,8 +39,10 @@
         cua-resize-rectangle-left
         dabbrev-expand
         dired-flag-file-deletion
+        down-list
         electric-indent-just-newline
         electric-newline-and-maybe-indent
+        electric-pair-delete-pair
         end-of-buffer
         end-of-visual-line
         eri-indent
@@ -52,6 +59,7 @@
         indent-for-tab-command
         indent-rigidly
         keyboard-escape-quit
+        kill-backward-up-list
         kill-region
         kill-visual-line
         mark-sexp

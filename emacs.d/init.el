@@ -520,7 +520,8 @@
   :ensure t
   :hook ((elm-mode . flycheck-mode)
          (typescript-mode . flycheck-mode)
-         (web-mode . flycheck-mode)))
+         (web-mode . flycheck-mode)
+         (clojure-mode . flycheck-mode)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; ws-butler
@@ -744,3 +745,30 @@
   :config
   (editorconfig-mode 1)
   :diminish editorconfig-mode)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Clojure
+
+(use-package clojure-mode
+  :ensure t
+  :bind (("C-M-<backspace>" . kill-backward-up-list))
+  :init
+  (defun my-clojure-mode-hook ()
+    (electric-pair-local-mode 1))
+  (add-hook 'clojure-mode-hook 'my-clojure-mode-hook))
+
+(use-package cider
+  :ensure t)
+
+(use-package rainbow-delimiters
+  :ensure t
+  :hook ((clojure-mode . rainbow-delimiters-mode)
+         (emacs-lisp-mode . rainbow-delimiters-mode)))
+
+(use-package aggressive-indent
+  :ensure t
+  :hook ((clojure-mode . aggressive-indent-mode)))
+
+(use-package flycheck-clj-kondo
+  :ensure t)
+
