@@ -72,7 +72,7 @@
  '(cua-read-only-cursor-color "#859900")
  '(custom-safe-themes
    (quote
-    ("a8245b7cc985a0610d71f9852e9f2767ad1b852c2bdea6f4aadc12cce9c4d6d0" "d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" "bf58fd87997ec29aef8edfdd8f4ab854f5389e9d23a63b0835c497987a6c5084" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" default)))
+    ("2809bcb77ad21312897b541134981282dc455ccd7c14d74cc333b6e549b824f3" "a8245b7cc985a0610d71f9852e9f2767ad1b852c2bdea6f4aadc12cce9c4d6d0" "d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" "bf58fd87997ec29aef8edfdd8f4ab854f5389e9d23a63b0835c497987a6c5084" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" default)))
  '(elm-compile-arguments (quote ("--yes" "--warn" "--output=target/elm.js")))
  '(fci-rule-color "#eee8d5")
  '(global-auto-revert-mode t)
@@ -103,7 +103,7 @@
     ("#dc322f" "#cb4b16" "#b58900" "#546E00" "#B4C342" "#00629D" "#2aa198" "#d33682" "#6c71c4")))
  '(package-selected-packages
    (quote
-    (flycheck-clj-kondo aggressive-indent aggresive-indent aggresive-indent-mode rainbow-delimiters cider clojure-mode clojure prettier-js editorconfig htmlize htlmize groovy-mode gradle-mode gradle company-restclient restclient restclient-mode dhall-mode sml-mode eglot fsharp-mode god-mode helm-hoogle dockerfile-mode attrap attrap-attrap web-mode tide typescript-mode visual-fill-column longlines-mode fill-column-indicator flycheck-elm nyan-mode kotlin-mode ws-butler elm-mode magit neotree multiple-cursors markdown-mode intero flymake-hlint haskell-mode solarized-theme diff-hl expand-region smex ido-vertical-mode flychdeck-elm)))
+    (csv-mode nix-buffer nix-mode flycheck-clj-kondo aggressive-indent aggresive-indent aggresive-indent-mode rainbow-delimiters cider clojure-mode clojure prettier-js editorconfig htmlize htlmize groovy-mode gradle-mode gradle company-restclient restclient restclient-mode dhall-mode sml-mode eglot fsharp-mode god-mode helm-hoogle dockerfile-mode attrap attrap-attrap web-mode tide typescript-mode visual-fill-column longlines-mode fill-column-indicator flycheck-elm nyan-mode kotlin-mode ws-butler elm-mode magit neotree multiple-cursors markdown-mode intero flymake-hlint haskell-mode solarized-theme diff-hl expand-region smex ido-vertical-mode flychdeck-elm)))
  '(pos-tip-background-color "#eee8d5")
  '(pos-tip-foreground-color "#586e75")
  '(safe-local-variable-values
