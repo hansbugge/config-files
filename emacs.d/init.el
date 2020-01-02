@@ -42,6 +42,9 @@
 ;; Opposite of other-windows
 (global-set-key (kbd "C-x O") (lambda () (interactive) (other-window -1)))
 
+;; Backwards mark-sexp
+(global-set-key (kbd "C-M-S-SPC") (lambda () (interactive (mark-sexp -1))))
+
 ;; Show matching parentheses
 (show-paren-mode t)
 
@@ -88,6 +91,7 @@
 ;; Shortcuts to certain files using registers
 ;; E.g. `C-x r j e` for visiting init.el
 (set-register ?e '(file . "~/.emacs.d/init.el"))
+(set-register ?n '(file . "~/notes.org"))
 
 ;; Attempt to avoid crash bug in version
 ;; GNU Emacs 26.1 (build 1, x86_64-apple-darwin13.4.0, Carbon Version 157 AppKit 1265.21) of 2018-06-18
@@ -244,6 +248,9 @@
         (global-set-key [(hyper l)] 'goto-line)
         (global-set-key [(hyper z)] 'undo)
         (global-set-key [(hyper q)] 'save-buffers-kill-terminal)
+
+        ;; Unbind C-z which minimizes window
+        (global-unset-key (kbd "C-z"))
         ))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -401,8 +408,7 @@
 
 (use-package intero
   :ensure t
-  :hook (haskell-mode . intero-mode)
-  )
+  :hook (haskell-mode . intero-mode))
 
 (use-package helm-hoogle
   :ensure t
@@ -520,8 +526,7 @@
   :ensure t
   :hook ((elm-mode . flycheck-mode)
          (typescript-mode . flycheck-mode)
-         (web-mode . flycheck-mode)
-         (clojure-mode . flycheck-mode)))
+         (web-mode . flycheck-mode)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; ws-butler
@@ -712,11 +717,13 @@
 (use-package restclient
   :ensure t
   :commands 'restclient-mode
-  :mode "\\.rest\\'"
+  :mode ("\\.rest\\'" . restclient-mode)
   :init
   (defun my-restclient-mode-hook ()
     (setq-local company-backends '(company-restclient)))
-  (add-hook 'restclient-mode-hook 'my-restclient-mode-hook))
+   (add-hook 'restclient-mode-hook 'my-restclient-mode-hook)
+  :config
+  (add-to-list 'restclient-content-type-modes '("application/edn" . clojure-mode)))
 
 (use-package company-restclient
   :ensure t
@@ -751,10 +758,13 @@
 
 (use-package clojure-mode
   :ensure t
+  :after flycheck
   :bind (("C-M-<backspace>" . kill-backward-up-list))
   :init
   (defun my-clojure-mode-hook ()
-    (electric-pair-local-mode 1))
+    (electric-pair-local-mode 1)
+    (if (buffer-file-name) (flycheck-mode))
+    (eldoc-mode 1))
   (add-hook 'clojure-mode-hook 'my-clojure-mode-hook))
 
 (use-package cider
@@ -777,3 +787,18 @@
 
 (use-package dired+
   :load-path "lisp")
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Nix
+
+(use-package nix-mode
+  :ensure t)
+
+(use-package nix-buffer
+  :ensure t)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; csv-mode
+
+(use-package csv-mode
+  :ensure t)
