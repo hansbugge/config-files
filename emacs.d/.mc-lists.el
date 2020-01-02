@@ -33,6 +33,7 @@
         comment-dwim-2
         company-manual-begin
         cua-cut-region
+        cua-delete-char-rectangle
         cua-delete-region
         cua-exchange-point-and-mark
         cua-paste
@@ -68,6 +69,7 @@
         mouse-minor-mode-menu
         mouse-yank-primary
         move-line-down
+        move-line-up
         org-beginning-of-line
         org-cycle
         org-delete-char
@@ -80,6 +82,7 @@
         org-yank
         picture-self-insert
         proof-electric-terminator
+        rectangle-mark-mode
         reftex-label
         reindent-then-newline-and-indent
         repeat
@@ -110,6 +113,7 @@
         agda2-popup-menu-3
         aquamacs-latex-crossref
         aquamacs-undo
+        cua-insert-char-rectangle
         cua-set-rectangle-mark
         describe-key
         eval-defun
@@ -133,6 +137,7 @@
         query-replace
         raise-next-frame
         scheme-send-buffer-and-go
+        shrink-window-if-larger-than-buffer
         smerge-keep-upper
         toggle-input-method
         ))
