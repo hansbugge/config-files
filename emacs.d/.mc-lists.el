@@ -26,8 +26,12 @@
         autopair-skip-close-maybe
         backward-sexp
         beginning-of-buffer
+        beginning-of-defun
         cider-eval-defun-at-point
         cider-eval-last-sexp
+        clojure-convert-collection-to-list
+        clojure-convert-collection-to-map
+        clojure-convert-collection-to-vector
         clojure-thread-last-all
         clojure-unwind
         comment-dwim-2
@@ -113,6 +117,8 @@
         agda2-popup-menu-3
         aquamacs-latex-crossref
         aquamacs-undo
+        cider-find-var
+        cider-switch-to-repl-buffer
         cua-insert-char-rectangle
         cua-set-rectangle-mark
         describe-key
@@ -136,6 +142,7 @@
         push-button
         query-replace
         raise-next-frame
+        save-some-buffers
         scheme-send-buffer-and-go
         shrink-window-if-larger-than-buffer
         smerge-keep-upper

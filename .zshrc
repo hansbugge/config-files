@@ -60,7 +60,7 @@ ZSH_THEME="robbyrussell"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
     git
-    stack
+    # stack
     mvn
     docker
     gradle
@@ -97,18 +97,15 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-alias ls="ls --color=auto -G"
+# alias ls="ls --color=auto -G"
 alias s="cd .."
 alias oa="open -a"
 alias tree="tree -C"
-alias emacs25="/Applications/Emacs25.app/Contents/MacOS/Emacs -nw"
-alias gemacs25="open -a /Applications/Emacs25.app/"
-alias new-gemacs25="open -n -a /Applications/Emacs25.app/"
 alias emacs="/Applications/Emacs.app/Contents/MacOS/Emacs -nw"
 alias gemacs="open -a /Applications/Emacs.app/"
 alias new-gemacs="open -n -a /Applications/Emacs.app/"
-alias grom="git rebase origin/master"
 
 export PATH="$HOME/.jenv/shims:/usr/local/opt/texinfo/bin:/usr/local/opt/gnu-sed/libexec/gnubin:/usr/local/opt/findutils/libexec/gnubin:/usr/local/opt/coreutils/libexec/gnubin:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:/Users/hansbugge/.local/bin:$PATH"
 
 source ~/.profile
+[ -f "${GHCUP_INSTALL_BASE_PREFIX:=$HOME}/.ghcup/env" ] && source "${GHCUP_INSTALL_BASE_PREFIX:=$HOME}/.ghcup/env"
