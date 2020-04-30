@@ -768,7 +768,9 @@
   (add-hook 'clojure-mode-hook 'my-clojure-mode-hook))
 
 (use-package cider
-  :ensure t)
+  :ensure t
+  :config
+  (setq cider-offer-to-open-cljs-app-in-browser nil))
 
 (use-package rainbow-delimiters
   :ensure t
@@ -780,6 +782,9 @@
   :hook ((clojure-mode . aggressive-indent-mode)))
 
 (use-package flycheck-clj-kondo
+  :ensure t)
+
+(use-package clj-refactor
   :ensure t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
