@@ -56,7 +56,11 @@
 
 ;; Trailing whitespace
 (dolist (hook '(prog-mode-hook text-mode-hook))
-  (add-hook hook (lambda () (setq show-trailing-whitespace t))))
+  (add-hook hook (lambda ()
+                   (setq show-trailing-whitespace t)
+                   (font-lock-add-keywords
+                    nil
+                    '(("\t" 0 'trailing-whitespace prepend))))))
 
 ;; Truncate long lines
 (add-hook 'prog-mode-hook
