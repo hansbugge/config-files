@@ -101,9 +101,13 @@ source $ZSH/oh-my-zsh.sh
 alias s="cd .."
 alias oa="open -a"
 alias tree="tree -C"
-alias emacs="/Applications/Emacs.app/Contents/MacOS/Emacs -nw"
-alias gemacs="open -a /Applications/Emacs.app/"
-alias new-gemacs="open -n -a /Applications/Emacs.app/"
+# Hopefully there's exactly one match here, but it won't fail if there are more or less than one.
+EMACS_DIRS=(/usr/local/Cellar/emacs-mac/emacs-*)
+for EMACS_DIR in "${EMACS_DIRS[@]}"; do
+  alias emacs="$EMACS_DIR/bin/emacs"
+  alias gemacs="open -a $EMACS_DIR/Emacs.app"
+  alias new-gemacs="open -an $EMACS_DIR/Emacs.app"
+done
 
 export PATH="$HOME/.jenv/shims:/usr/local/opt/texinfo/bin:/usr/local/opt/gnu-sed/libexec/gnubin:/usr/local/opt/findutils/libexec/gnubin:/usr/local/opt/coreutils/libexec/gnubin:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:/Users/hansbugge/.local/bin:$PATH"
 
