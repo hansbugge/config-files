@@ -31,11 +31,13 @@
         cider-eval-last-sexp
         clojure-convert-collection-to-list
         clojure-convert-collection-to-map
+        clojure-convert-collection-to-set
         clojure-convert-collection-to-vector
         clojure-thread-last-all
         clojure-unwind
         comment-dwim-2
         company-manual-begin
+        copy-rectangle-as-kill
         cua-cut-region
         cua-delete-char-rectangle
         cua-delete-region
@@ -62,6 +64,7 @@
         ignore
         increment-number-at-point
         indent-for-tab-command
+        indent-new-comment-line
         indent-rigidly
         keyboard-escape-quit
         kill-backward-up-list
@@ -84,6 +87,14 @@
         org-metaright
         org-self-insert-command
         org-yank
+        paredit-backslash
+        paredit-backward
+        paredit-backward-kill-word
+        paredit-doublequote
+        paredit-forward
+        paredit-forward-delete
+        paredit-newline
+        paredit-open-round
         picture-self-insert
         proof-electric-terminator
         rectangle-mark-mode
@@ -101,6 +112,7 @@
         sh-assignment
         smex
         transpose-sexps
+        transpose-words
         typescript-insert-and-autoconvert-to-template
         typescript-insert-and-indent
         widget-button-press
@@ -125,6 +137,7 @@
         eval-defun
         eval-last-sexp
         ido-find-file
+        ido-find-file-read-only
         ido-switch-buffer
         idris-load-file
         intero-repl-load
@@ -138,6 +151,7 @@
         mouse-select-window
         mouse-set-region
         ns-copy-including-secondary
+        pop-global-mark
         proof-goto-point
         push-button
         query-replace
