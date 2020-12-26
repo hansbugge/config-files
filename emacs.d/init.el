@@ -302,6 +302,32 @@
   :load-path "lisp"
   :commands kill-buffer-file-name)
 
+(defun hans/maximize-frame ()
+  "Maximize current frame"
+  (interactive)
+  (let* ((geometry (frame-monitor-attribute 'geometry))
+         (width (- (nth 2 geometry) 35))
+         (height (nth 3 geometry))
+         ;; (height (display-pixel-height))
+         ;; (width (- (display-pixel-width) 35))
+         (frame (selected-frame)))
+    (set-frame-position frame 0 0)
+    (set-frame-size frame width height 't)))
+
+(defun hans/half-size-frame ()
+  (interactive)
+  (let* ((geometry (frame-monitor-attribute 'geometry))
+         (width (/ (nth 2 geometry) 2))
+         (height (nth 3 geometry))
+         (frame (selected-frame)))
+    (set-frame-position frame 0 0)
+    (set-frame-size frame width height 't)))
+
+;; Overrides compose-mail-other-frame, but I'll survive
+(global-set-key (kbd "C-x 5 m") #'hans/maximize-frame)
+(global-set-key (kbd "C-x 5 h") #'hans/half-size-frame)
+(global-set-key (kbd "C-x 5 f") #'toggle-frame-fullscreen)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Aleš' functions
 
