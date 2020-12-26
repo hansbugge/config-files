@@ -3,12 +3,11 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(LaTeX-verbatim-environments (quote ("verbatim" "verbatim*" "pseudocode" "lstlisting")))
- '(LaTeX-verbatim-macros-with-braces (quote ("code")))
- '(LaTeX-verbatim-macros-with-delims (quote ("verb" "verb*")))
+ '(LaTeX-verbatim-environments '("verbatim" "verbatim*" "pseudocode" "lstlisting"))
+ '(LaTeX-verbatim-macros-with-braces '("code"))
+ '(LaTeX-verbatim-macros-with-delims '("verb" "verb*"))
  '(TeX-command-list
-   (quote
-    (("TeX" "%(PDF)%(tex) %(file-line-error) %(extraopts) %`%S%(PDFout)%(mode)%' %t" TeX-run-TeX nil
+   '(("TeX" "%(PDF)%(tex) %(file-line-error) %(extraopts) %`%S%(PDFout)%(mode)%' %t" TeX-run-TeX nil
       (plain-tex-mode texinfo-mode ams-tex-mode)
       :help "Run plain TeX")
      ("XeLatexMk" "latexmk -pv -pdflatex=\"xelatex --synctex=1 %O %S\" -pdf -dvi- -ps- %t" TeX-run-TeX nil
@@ -52,67 +51,60 @@
      ("Spell" "(TeX-ispell-document \"\")" TeX-run-function nil t :help "Spell-check the document")
      ("Clean" "TeX-clean" TeX-run-function nil t :help "Delete generated intermediate files")
      ("Clean All" "(TeX-clean t)" TeX-run-function nil t :help "Delete generated intermediate and output files")
-     ("Other" "" TeX-run-command t t :help "Run an arbitrary command"))))
+     ("Other" "" TeX-run-command t t :help "Run an arbitrary command")))
  '(TeX-source-correlate-mode t)
  '(TeX-view-program-list
-   (quote
-    (("Skim" "/Applications/Skim.app/Contents/SharedSupport/displayline -g %n %o %b"))))
+   '(("Skim" "/Applications/Skim.app/Contents/SharedSupport/displayline -g %n %o %b")))
  '(TeX-view-program-selection
-   (quote
-    ((output-dvi "open")
+   '((output-dvi "open")
      (output-pdf "Skim")
-     (output-html "open"))))
- '(agda2-include-dirs (quote ("." "/Users/hbugge/Agda/agda-stdlib/src")))
+     (output-html "open")))
+ '(agda2-include-dirs '("." "/Users/hbugge/Agda/agda-stdlib/src"))
  '(ansi-color-names-vector
    ["#073642" "#dc322f" "#859900" "#b58900" "#268bd2" "#d33682" "#2aa198" "#657b83"])
- '(compilation-message-face (quote default))
+ '(compilation-message-face 'default)
  '(cua-global-mark-cursor-color "#2aa198")
  '(cua-normal-cursor-color "#839496")
  '(cua-overwrite-cursor-color "#b58900")
  '(cua-read-only-cursor-color "#859900")
  '(custom-safe-themes
-   (quote
-    ("c433c87bd4b64b8ba9890e8ed64597ea0f8eb0396f4c9a9e01bd20a04d15d358" "2809bcb77ad21312897b541134981282dc455ccd7c14d74cc333b6e549b824f3" "a8245b7cc985a0610d71f9852e9f2767ad1b852c2bdea6f4aadc12cce9c4d6d0" "d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" "bf58fd87997ec29aef8edfdd8f4ab854f5389e9d23a63b0835c497987a6c5084" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" default)))
- '(elm-compile-arguments (quote ("--yes" "--warn" "--output=target/elm.js")))
+   '("c433c87bd4b64b8ba9890e8ed64597ea0f8eb0396f4c9a9e01bd20a04d15d358" "2809bcb77ad21312897b541134981282dc455ccd7c14d74cc333b6e549b824f3" "a8245b7cc985a0610d71f9852e9f2767ad1b852c2bdea6f4aadc12cce9c4d6d0" "d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" "bf58fd87997ec29aef8edfdd8f4ab854f5389e9d23a63b0835c497987a6c5084" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" default))
+ '(elm-compile-arguments '("--yes" "--warn" "--output=target/elm.js"))
  '(fci-rule-color "#073642")
  '(global-auto-revert-mode t)
  '(gradle-mode nil)
  '(haskell-interactive-popup-errors nil)
- '(highlight-changes-colors (quote ("#d33682" "#6c71c4")))
+ '(highlight-changes-colors '("#d33682" "#6c71c4"))
  '(highlight-symbol-colors
-   (quote
-    ("#3b6b40f432d6" "#07b9463c4d36" "#47a3341e358a" "#1d873c3f56d5" "#2d86441c3361" "#43b7362d3199" "#061d417f59d7")))
+   '("#3b6b40f432d6" "#07b9463c4d36" "#47a3341e358a" "#1d873c3f56d5" "#2d86441c3361" "#43b7362d3199" "#061d417f59d7"))
  '(highlight-symbol-foreground-color "#93a1a1")
  '(highlight-tail-colors
-   (quote
-    (("#073642" . 0)
+   '(("#073642" . 0)
      ("#5b7300" . 20)
      ("#007d76" . 30)
      ("#0061a8" . 50)
      ("#866300" . 60)
      ("#992700" . 70)
      ("#a00559" . 85)
-     ("#073642" . 100))))
+     ("#073642" . 100)))
  '(hl-bg-colors
-   (quote
-    ("#866300" "#992700" "#a7020a" "#a00559" "#243e9b" "#0061a8" "#007d76" "#5b7300")))
+   '("#866300" "#992700" "#a7020a" "#a00559" "#243e9b" "#0061a8" "#007d76" "#5b7300"))
  '(hl-fg-colors
-   (quote
-    ("#002b36" "#002b36" "#002b36" "#002b36" "#002b36" "#002b36" "#002b36" "#002b36")))
- '(hl-paren-colors (quote ("#2aa198" "#b58900" "#268bd2" "#6c71c4" "#859900")))
+   '("#002b36" "#002b36" "#002b36" "#002b36" "#002b36" "#002b36" "#002b36" "#002b36"))
+ '(hl-paren-colors '("#2aa198" "#b58900" "#268bd2" "#6c71c4" "#859900"))
  '(lsp-ui-doc-border "#93a1a1")
  '(magit-diff-use-overlays nil)
  '(nrepl-message-colors
-   (quote
-    ("#dc322f" "#cb4b16" "#b58900" "#5b7300" "#b3c34d" "#0061a8" "#2aa198" "#d33682" "#6c71c4")))
+   '("#dc322f" "#cb4b16" "#b58900" "#5b7300" "#b3c34d" "#0061a8" "#2aa198" "#d33682" "#6c71c4"))
  '(package-selected-packages
-   (quote
-    (clj-refactor undo-tree yaml-mode rjsx-mode idris-mode gitignore-mode csv-mode nix-buffer nix-mode flycheck-clj-kondo aggressive-indent aggresive-indent aggresive-indent-mode rainbow-delimiters cider clojure-mode clojure prettier-js editorconfig htmlize htlmize groovy-mode gradle-mode gradle company-restclient restclient restclient-mode dhall-mode sml-mode eglot fsharp-mode god-mode helm-hoogle dockerfile-mode attrap attrap-attrap web-mode tide typescript-mode visual-fill-column longlines-mode fill-column-indicator flycheck-elm nyan-mode kotlin-mode ws-butler elm-mode magit neotree multiple-cursors markdown-mode intero flymake-hlint haskell-mode solarized-theme diff-hl expand-region smex ido-vertical-mode flychdeck-elm)))
+   '(z3-mode scss-mode wgrep clj-refactor undo-tree yaml-mode rjsx-mode idris-mode gitignore-mode csv-mode nix-buffer nix-mode flycheck-clj-kondo aggressive-indent aggresive-indent aggresive-indent-mode rainbow-delimiters cider clojure-mode clojure prettier-js editorconfig htmlize htlmize groovy-mode gradle-mode gradle company-restclient restclient restclient-mode dhall-mode sml-mode eglot fsharp-mode god-mode helm-hoogle dockerfile-mode attrap attrap-attrap web-mode tide typescript-mode visual-fill-column longlines-mode fill-column-indicator flycheck-elm nyan-mode kotlin-mode ws-butler elm-mode magit neotree multiple-cursors markdown-mode intero flymake-hlint haskell-mode solarized-theme diff-hl expand-region smex ido-vertical-mode flychdeck-elm))
  '(pos-tip-background-color "#073642")
  '(pos-tip-foreground-color "#93a1a1")
  '(safe-local-variable-values
-   (quote
-    ((cider-shadow-cljs-default-options . ":app")
+   '((dockerfile-image-name . "rs-core-cordapp")
+     (cider-shadow-default-options . ":app")
+     (cider-default-cljs-repl . shadow)
+     (cider-shadow-cljs-default-options . ":app")
      (intero-targets "sic:lib" "sic:test:sic-test")
      (intero-targets "language-lib:lib" "language-lib:test:dil-service-test")
      (intero-targets)
@@ -129,29 +121,24 @@
      (haskell-indent-spaces . 4)
      (preview-scale-function . 1.2)
      (eval agda-input-add-translations
-           (quote
-            (("bi" . "mathbb{I}")
-             ("longmapsto" . "longmapsto"))))
+           '(("bi" . "mathbb{I}")
+             ("longmapsto" . "longmapsto")))
      (eval agda-input-add-translations
-           (quote
-            (("bi" . "mathbb{I}")
-             ("longmapsto" . "⟼"))))
+           '(("bi" . "mathbb{I}")
+             ("longmapsto" . "⟼")))
      (eval agda-input-add-translations
-           (quote
-            (("bi" . "𝕀")
-             ("longmapsto" . "⟼"))))
+           '(("bi" . "𝕀")
+             ("longmapsto" . "⟼")))
      (eval agda-input-add-translations
-           (quote
-            (("gu" . "⛨")))))))
- '(send-mail-function (quote mailclient-send-it))
+           '(("gu" . "⛨")))))
+ '(send-mail-function 'mailclient-send-it)
  '(smartrep-mode-line-active-bg (solarized-color-blend "#859900" "#073642" 0.2))
  '(term-default-bg-color "#002b36")
  '(term-default-fg-color "#839496")
  '(vc-annotate-background nil)
  '(vc-annotate-background-mode nil)
  '(vc-annotate-color-map
-   (quote
-    ((20 . "#dc322f")
+   '((20 . "#dc322f")
      (40 . "#cb4366eb20b4")
      (60 . "#c1167942154f")
      (80 . "#b58900")
@@ -168,12 +155,11 @@
      (300 . "#303498e7affc")
      (320 . "#2fa1947cbb9b")
      (340 . "#2c879008c736")
-     (360 . "#268bd2"))))
+     (360 . "#268bd2")))
  '(vc-annotate-very-old-color nil)
  '(visual-line-mode nil t)
  '(weechat-color-list
-   (quote
-    (unspecified "#002b36" "#073642" "#a7020a" "#dc322f" "#5b7300" "#859900" "#866300" "#b58900" "#0061a8" "#268bd2" "#a00559" "#d33682" "#007d76" "#2aa198" "#839496" "#657b83")))
+   '(unspecified "#002b36" "#073642" "#a7020a" "#dc322f" "#5b7300" "#859900" "#866300" "#b58900" "#0061a8" "#268bd2" "#a00559" "#d33682" "#007d76" "#2aa198" "#839496" "#657b83"))
  '(xterm-color-names
    ["#073642" "#dc322f" "#859900" "#b58900" "#268bd2" "#d33682" "#2aa198" "#eee8d5"])
  '(xterm-color-names-bright
