@@ -866,8 +866,8 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Dired+
 
-(use-package dired+
-  :load-path "lisp")
+;; (use-package dired+
+;;   :load-path "lisp")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Nix
