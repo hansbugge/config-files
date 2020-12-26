@@ -64,6 +64,7 @@ plugins=(
     mvn
     docker
     gradle
+    aws
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -113,3 +114,34 @@ export PATH="$HOME/.jenv/shims:/usr/local/opt/texinfo/bin:/usr/local/opt/gnu-sed
 
 source ~/.profile
 [ -f "${GHCUP_INSTALL_BASE_PREFIX:=$HOME}/.ghcup/env" ] && source "${GHCUP_INSTALL_BASE_PREFIX:=$HOME}/.ghcup/env"
+
+# tabtab source for serverless package
+# uninstall by removing these lines or running `tabtab uninstall serverless`
+[[ -f /Users/hansbugge/realstocks/serverless/node_modules/tabtab/.completions/serverless.zsh ]] && . /Users/hansbugge/realstocks/serverless/node_modules/tabtab/.completions/serverless.zsh
+# tabtab source for sls package
+# uninstall by removing these lines or running `tabtab uninstall sls`
+[[ -f /Users/hansbugge/realstocks/serverless/node_modules/tabtab/.completions/sls.zsh ]] && . /Users/hansbugge/realstocks/serverless/node_modules/tabtab/.completions/sls.zsh
+# tabtab source for slss package
+# uninstall by removing these lines or running `tabtab uninstall slss`
+[[ -f /Users/hansbugge/realstocks/serverless/node_modules/tabtab/.completions/slss.zsh ]] && . /Users/hansbugge/realstocks/serverless/node_modules/tabtab/.completions/slss.zsh
+eval export PATH="/Users/hansbugge/.jenv/shims:${PATH}"
+export JENV_SHELL=zsh
+export JENV_LOADED=1
+unset JAVA_HOME
+source '/usr/local/Cellar/jenv/0.5.4/libexec/libexec/../completions/jenv.zsh'
+jenv rehash 2>/dev/null
+source "/Users/hansbugge/.jenv/plugins/export/etc/jenv.d/init/export_jenv_hook.zsh"
+jenv() {
+  typeset command
+  command="$1"
+  if [ "$#" -gt 0 ]; then
+    shift
+  fi
+
+  case "$command" in
+  enable-plugin|rehash|shell|shell-options)
+    eval `jenv "sh-$command" "$@"`;;
+  *)
+    command jenv "$command" "$@";;
+  esac
+}
