@@ -169,20 +169,46 @@
   :config
   (global-diff-hl-mode 1))
 
-(defun hans/switch-theme (theme)
+(defvar hans/theme-file (concat user-emacs-directory "theme.el"))
+
+(defun hans/switch-theme (theme persist)
   "Disable all themes, then load THEME"
-  (apply 'disable-theme custom-enabled-themes)
+  (when custom-enabled-themes
+    (apply 'disable-theme custom-enabled-themes))
+  (when persist
+    (with-temp-file hans/theme-file
+      (insert (prin1-to-string theme))
+      theme))
   (load-theme theme))
+
+(defun get-string-from-file (file-path)
+  "Return file-path's file content."
+  (with-temp-buffer
+    (insert-file-contents file-path)
+    (buffer-string)))
+
+(defun hans/load-theme ()
+  "Load theme from theme.el"
+  (let ((saved-theme (intern-soft (string-trim (get-string-from-file hans/theme-file)))))
+    (when saved-theme
+      (hans/switch-theme saved-theme nil))))
 
 (defun lights-on ()
   "Switch to light theme"
   (interactive)
-  (hans/switch-theme 'solarized-light))
+  (hans/switch-theme 'solarized-light 't))
 
 (defun lights-off ()
   "Switch to dark theme"
   (interactive)
-  (hans/switch-theme 'solarized-dark))
+  (hans/switch-theme 'solarized-dark 't))
+
+(defun lights-toggle ()
+  "Toggle between lights and dark theme"
+  (interactive)
+  (if (member 'solarized-light custom-enabled-themes)
+      (lights-off)
+    (lights-on)))
 
 ;; https://www.emacswiki.org/emacs/IncrementNumber
 (defun increment-number-at-point (&optional arg)
@@ -208,7 +234,7 @@
   :ensure t
   :if window-system
   :config
-  (load-theme 'solarized-dark)
+  (hans/load-theme)
   ;; For some reason solarized does not set
   ;; "company-tooltip-selection".  This is a temporary hack until that
   ;; is solved.
