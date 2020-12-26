@@ -216,16 +216,16 @@
   (interactive "p*")
   (save-excursion
     (save-match-data
-      (let (inc-by field-width answer)
-        (setq inc-by (if arg arg 1))
+      (let ((inc-by (or arg 1)))
         (skip-chars-backward "0123456789")
         (when (re-search-forward "[0-9]+" nil t)
-          (setq field-width (- (match-end 0) (match-beginning 0)))
-          (setq answer (+ (string-to-number (match-string 0) 10) inc-by))
-          (when (< answer 0)
-            (setq answer (+ (expt 10 field-width) answer)))
-          (replace-match (format (concat "%0" (int-to-string field-width) "d")
-                                 answer)))))))
+          (let* ((field-width (- (match-end 0) (match-beginning 0)))
+                 (answer (+ (string-to-number (match-string 0) 10) inc-by))
+                 (answer (if (< answer 0)
+                             (+ (expt 10 field-width) answer)
+                           answer)))
+            (replace-match (format (concat "%0" (int-to-string field-width) "d")
+                                   answer))))))))
 
 (global-set-key (kbd "C-c +") 'increment-number-at-point)
 
@@ -253,7 +253,10 @@
       (tool-bar-mode 0)
 
       ;; Font
-      (set-face-attribute 'default nil :height 168) ;; 140 * 1.2 = 168
+      ;; At 2x retina scaling, i.e. logical 1080p resolution, 140 is
+      ;; plenty (and also nice and crisp).  At higher resolutions
+      ;; increments of 1.2 look nice (140, 168, 202)
+      (set-face-attribute 'default nil :height 140)
 
       ;; Highlight current line
       (global-hl-line-mode 1)
@@ -279,8 +282,9 @@
         (global-set-key [(hyper z)] 'undo)
         (global-set-key [(hyper q)] 'save-buffers-kill-terminal)
 
-        ;; Unbind C-z which minimizes window
+        ;; Unbind C-z and C-x C-z which minimizes window
         (global-unset-key (kbd "C-z"))
+        (global-unset-key (kbd "C-x C-z"))
         ))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -303,10 +307,10 @@
 
 (use-package fill-paragraph
   :load-path "lisp"
-  :bind (:map LaTeX-mode-map
-         ("M-q" . ales/fill-paragraph)
-         :map markdown-mode-map
-         ("M-q" . ales/fill-paragraph )))
+  :bind (:map
+         LaTeX-mode-map ("M-q" . ales/fill-paragraph)
+         :map
+         markdown-mode-map ("M-q" . ales/fill-paragraph)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Agda
@@ -317,15 +321,15 @@
 
 (when (program-exists-in-path "agda-mode")
   (load-file (let ((coding-system-for-read 'utf-8))
-	       (shell-command-to-string "agda-mode locate")))
+               (shell-command-to-string "agda-mode locate")))
 
   ;; I want to load the agda input mode even if I'm not doing agda
   (load-file (let ((coding-system-for-read 'utf-8))
-	       (let ((str (shell-command-to-string "agda-mode locate")))
-		 ;; `agda-mode locate' almost gives the right path, we just need
-		 ;; to change the filename
-		 (when (string-match "agda2.el" str)
-		   (replace-match "agda-input.el" 1 nil str)))))
+               (let ((str (shell-command-to-string "agda-mode locate")))
+                 ;; `agda-mode locate' almost gives the right path, we just need
+                 ;; to change the filename
+                 (when (string-match "agda2.el" str)
+                   (replace-match "agda-input.el" 1 nil str)))))
 
   (set-input-method "Agda")
   (toggle-input-method))
@@ -565,7 +569,8 @@
   :ensure t
   :diminish ws-butler-mode
   :hook ((prog-mode . ws-butler-mode)
-         (markdown-mode . ws-butler-mode)))
+         (markdown-mode . ws-butler-mode)
+         (yaml-mode . ws-butler-mode)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; company
@@ -647,9 +652,12 @@
          (web-mode . tide-setup))
   :init
   (defun my-tide-mode-hook ()
-    (tide-hl-identifier-mode 1))
+    (tide-hl-identifier-mode 1)
+    (setup-indent-with-two-spaces))
   (add-hook 'tide-mode-hook 'my-tide-mode-hook)
   :config
+  (setq flycheck-javascript-eslint-executable "eslint")
+  (flycheck-add-mode 'javascript-eslint 'web-mode)
   (flycheck-add-next-checker 'typescript-tide 'javascript-eslint)
   (flycheck-add-next-checker 'tsx-tide 'javascript-eslint))
 
@@ -725,15 +733,17 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; eglot (Emacs Polyglot)
 
-(use-package eglot
-  :ensure t
-  :pin melpa
-  :config
-  (add-to-list
-   'eglot-server-programs
-   '(csl-mode . ("language-server"
-                 "--csl-std-lib"
-                 "/Users/hansbugge/deon-dsl/cslstdlib/StdLib.csl"))))
+;;; Some weird bug in eglot makes eldoc not work in cider when eglot is loaded
+;;; Related: https://github.com/joaotavora/eglot/issues/534
+;; (use-package eglot
+;;   :ensure t
+;;   :pin melpa
+;;   :config
+;;   (add-to-list
+;;    'eglot-server-programs
+;;    '(csl-mode . ("language-server"
+;;                  "--csl-std-lib"
+;;                  "/Users/hansbugge/deon-dsl/cslstdlib/StdLib.csl"))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; sml-mode
@@ -751,7 +761,7 @@
   :init
   (defun my-restclient-mode-hook ()
     (setq-local company-backends '(company-restclient)))
-   (add-hook 'restclient-mode-hook 'my-restclient-mode-hook)
+  (add-hook 'restclient-mode-hook 'my-restclient-mode-hook)
   :config
   (add-to-list 'restclient-content-type-modes '("application/edn" . clojure-mode)))
 
@@ -793,9 +803,12 @@
   :init
   (defun my-clojure-mode-hook ()
     (electric-pair-local-mode 1)
-    (if (buffer-file-name) (flycheck-mode))
-    (eldoc-mode 1))
+    ;; (eldoc-mode 1) ; it doesn't work for some reason - I'll experiment with removing it
+    (when (buffer-file-name) (flycheck-mode)))
   (add-hook 'clojure-mode-hook 'my-clojure-mode-hook))
+
+;; try it everywhere:
+(electric-pair-mode 1)
 
 (use-package cider
   :ensure t
@@ -809,7 +822,14 @@
 
 (use-package aggressive-indent
   :ensure t
-  :hook ((clojure-mode . aggressive-indent-mode)))
+  :hook ((clojure-mode . aggressive-indent-mode))
+  :config
+  ;; Prevent aggresive-indent from ruining indentation in the rest of
+  ;; the file when accidentally inserting a closing bracket too much
+  (add-to-list
+   'aggressive-indent-dont-indent-if
+   '(and (derived-mode-p 'clojure-mode)
+         (null (thing-at-point 'sexp)))))
 
 (use-package flycheck-clj-kondo
   :ensure t)
@@ -836,4 +856,22 @@
 ;; csv-mode
 
 (use-package csv-mode
+  :ensure t)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; wgrep - Writable grep buffers
+
+(use-package wgrep
+  :ensure t)
+
+;;;;;;;;;;;;;
+;; scss
+
+(use-package scss-mode
+  :ensure t)
+
+;;;;;;;;;;;;;;;
+;; dockerfile-mode
+
+(use-package dockerfile-mode
   :ensure t)
