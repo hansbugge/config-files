@@ -98,7 +98,7 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-# alias ls="ls --color=auto -G"
+alias ls="ls --color=auto -G"
 alias s="cd .."
 alias oa="open -a"
 alias tree="tree -C"
@@ -145,3 +145,22 @@ jenv() {
     command jenv "$command" "$@";;
   esac
 }
+
+alias nrepl="clojure -M:test:decompiler:benchmarking:repl/rebel-nrepl"
+
+
+# Babashka related:
+
+alias bbrl="rlwrap bb"
+
+_bb_tasks() {
+    local matches=(`bb tasks |tail -n +3 |cut -f1 -d ' '`)
+    compadd -a matches
+    _files # autocomplete filenames as well
+}
+compdef _bb_tasks bb
+
+~/random-doc.clj
+
+source  <(doctl completion zsh)
+source  <(kubectl completion zsh)

@@ -8,6 +8,7 @@
 ;; Initialize package and use-package
 (require 'package)
 (setq package-enable-at-startup nil)
+(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
 (package-initialize)
 (unless (package-installed-p 'use-package)
@@ -19,7 +20,15 @@
   :if (memq window-system '(mac ns))
   :ensure t
   :config
+  (setq exec-path-from-shell-arguments '("-l"))
   (exec-path-from-shell-initialize))
+
+;; Avoid popping up a window with compilation warnings
+(setq native-comp-async-report-warnings-errors 'silent)
+
+;; Always ask for confirmation when quitting Emacs
+;; (it's easy to press C-x-c by accident)
+(setq confirm-kill-emacs 'yes-or-no-p)
 
 ;; Libraries
 (use-package diminish :ensure t :demand t)
@@ -189,7 +198,7 @@
 
 (defun hans/load-theme ()
   "Load theme from theme.el"
-  (let ((saved-theme (intern-soft (string-trim (get-string-from-file hans/theme-file)))))
+  (let ((saved-theme (intern-soft (get-string-from-file hans/theme-file))))
     (when saved-theme
       (hans/switch-theme saved-theme nil))))
 
@@ -293,6 +302,11 @@
   (menu-bar-mode 0))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Specifically for MacOS
+(when (string= system-type "darwin")
+  (setq dired-use-ls-dired nil))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; My own functions
 (use-package wrap
   :load-path "lisp"
@@ -308,8 +322,6 @@
   (let* ((geometry (frame-monitor-attribute 'geometry))
          (width (- (nth 2 geometry) 35))
          (height (nth 3 geometry))
-         ;; (height (display-pixel-height))
-         ;; (width (- (display-pixel-width) 35))
          (frame (selected-frame)))
     (set-frame-position frame 0 0)
     (set-frame-size frame width height 't)))
@@ -345,20 +357,20 @@
   "Check if PROGRAM is available"
   (zerop (call-process "command" nil nil nil "-v" program)))
 
-(when (program-exists-in-path "agda-mode")
-  (load-file (let ((coding-system-for-read 'utf-8))
-               (shell-command-to-string "agda-mode locate")))
+;; (when (program-exists-in-path "agda-mode")
+;;   (load-file (let ((coding-system-for-read 'utf-8))
+;;                (shell-command-to-string "agda-mode locate")))
 
-  ;; I want to load the agda input mode even if I'm not doing agda
-  (load-file (let ((coding-system-for-read 'utf-8))
-               (let ((str (shell-command-to-string "agda-mode locate")))
-                 ;; `agda-mode locate' almost gives the right path, we just need
-                 ;; to change the filename
-                 (when (string-match "agda2.el" str)
-                   (replace-match "agda-input.el" 1 nil str)))))
+;;   ;; I want to load the agda input mode even if I'm not doing agda
+;;   (load-file (let ((coding-system-for-read 'utf-8))
+;;                (let ((str (shell-command-to-string "agda-mode locate")))
+;;                  ;; `agda-mode locate' almost gives the right path, we just need
+;;                  ;; to change the filename
+;;                  (when (string-match "agda2.el" str)
+;;                    (replace-match "agda-input.el" 1 nil str)))))
 
-  (set-input-method "Agda")
-  (toggle-input-method))
+;;   (set-input-method "Agda")
+;;   (toggle-input-method))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Rearranging lines
@@ -394,8 +406,8 @@
      (if (use-region-p)
          (list (region-beginning) (region-end))
        (list (point) (point))))
-    (let ((narrowed-buffer-length   	; we save the resulting buffer length
-					; so we can indent correctly in the end.
+    (let ((narrowed-buffer-length       ; we save the resulting buffer length
+                                        ; so we can indent correctly in the end.
            (save-restriction
              (narrow-to-region b e)
              (goto-char (point-min))
@@ -404,8 +416,8 @@
              (insert "\n\\]")
              (- (point-max) (point-min)))))
       (indent-region b (+ b narrowed-buffer-length))
-      (when (= b e) 			; we have not selected a region, so
-					; place the cursor in ready position.
+      (when (= b e)                     ; we have not selected a region, so
+                                        ; place the cursor in ready position.
         (previous-line)
         (indent-for-tab-command)))))
 
@@ -442,16 +454,17 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Scheme
 
-(let ((petite-path "/usr/local/bin/petite"))
-  (when (program-exists-in-path petite-path)
-    (setq scheme-program-name petite-path)
-    (load-file "~/.emacs.d/scheme-setup.el")))
+;; (let ((petite-path "/usr/local/bin/petite"))
+;;   (when (program-exists-in-path petite-path)
+;;     (setq scheme-program-name petite-path)
+;;     (load-file "~/.emacs.d/scheme-setup.el")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Haskell stuff
 
 (use-package haskell-mode
   :ensure t
+  :disabled
   :mode (("\\.hs\\'" . haskell-mode)
          ("\\.lhs\\'" . literate-haskell-mode)
          ("\\.cabal\\'" . haskell-cabal-mode))
@@ -467,11 +480,13 @@
   :hook (haskell-mode . flymake-hlint-load))
 
 (use-package intero
+  :disabled
   :ensure t
   :hook (haskell-mode . intero-mode))
 
 (use-package helm-hoogle
   :ensure t
+  :disabled
   :after haskell-mode)
 
 (use-package dante
@@ -492,6 +507,7 @@
 
 ;; ATtempt to Repair At Point / jyp
 (use-package attrap
+  :disabled
   :ensure t
   :after dante-mode)
 
@@ -566,10 +582,12 @@
 
 (use-package flycheck-elm
   :ensure t
+  :disabled
   :after (flycheck))
 
 (use-package elm-mode
   :ensure t
+  :disabled
   :after (flycheck-elm)
   :mode "\\.elm\\'"
   :init
@@ -586,7 +604,9 @@
   :ensure t
   :hook ((elm-mode . flycheck-mode)
          (typescript-mode . flycheck-mode)
-         (web-mode . flycheck-mode)))
+         (javascript-mode . flycheck-mode)
+         (web-mode . flycheck-mode)
+         (sh-mode . flycheck-mode)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; ws-butler
@@ -608,7 +628,9 @@
   (global-company-mode t)
   ;; aligns annotation to the right hand side
   (setq company-tooltip-align-annotations t)
-  :bind ("H-C-c" . 'company-manual-begin)
+  ;; Cmd is H (hyper) in Yamamoto Emacs and s (super) in GNU Emacs 28
+  :bind (("H-C-c" . 'company-manual-begin)
+         ("C-s-c" . 'company-manual-begin))
   :diminish company-mode)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -633,6 +655,7 @@
 
 (use-package nyan-mode
   :ensure t
+  :disabled
   :commands nyan-mode)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -640,6 +663,7 @@
 
 (use-package idris-mode
   :ensure t
+  :disabled
   :mode
   "\\.idr\\'")
 
@@ -648,6 +672,7 @@
 
 (use-package rjsx-mode
   :ensure t
+  :disabled
   :mode
   "\\.js\\'"
   :config
@@ -675,6 +700,7 @@
 (use-package tide
   :ensure t
   :hook ((typescript-mode . tide-setup)
+         (js-mode . tide-setup)
          (web-mode . tide-setup))
   :init
   (defun my-tide-mode-hook ()
@@ -692,10 +718,25 @@
 
 (use-package prettier-js
   :ensure t
-  :commands prettier-js
-  :config
-  (setq prettier-js-command "npx")
-  (setq prettier-js-args '("prettier")))
+  :init
+  ;; https://github.com/prettier/prettier-emacs/issues/29
+  (defun maybe-use-prettier ()
+    "Enable prettier-js-mode if an rc file is located."
+    (if (locate-dominating-file default-directory ".prettierrc")
+        (prettier-js-mode +1)))
+
+  :hook
+  ((typescript-mode . maybe-use-prettier)
+   (web-mode . maybe-use-prettier)
+   (javascript-mode . maybe-use-prettier)))
+
+;; (use-package prettier-js
+;;   :ensure t
+;;   :disabled
+;;   :commands prettier-js
+;;   :config
+;;   (setq prettier-js-command "npx")
+;;   (setq prettier-js-args '("prettier")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Yaml
@@ -709,6 +750,7 @@
 ;; Dhall
 (use-package dhall-mode
   :ensure t
+  :disabled
   :mode
   "\\.dhall\\'")
 
@@ -717,6 +759,7 @@
 
 (use-package undo-tree
   :ensure t
+  :disabled
   :commands undo-tree-mode)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -730,6 +773,7 @@
 ;; God mode
 (use-package god-mode
   :ensure t
+  :disabled
   :bind ("<escape>" . god-local-mode)
   :defines saved-god-mode-line-faces
   :config
@@ -754,6 +798,7 @@
 ;; fsharp-mode
 (use-package fsharp-mode
   :ensure t
+  :disabled
   :mode "\\.fs\\'")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -761,6 +806,12 @@
 
 ;;; Some weird bug in eglot makes eldoc not work in cider when eglot is loaded
 ;;; Related: https://github.com/joaotavora/eglot/issues/534
+(use-package eglot
+  :disabled
+  :ensure t
+  :config
+  (add-to-list 'eglot-server-programs '(csl-mode . ("language-server"))))
+
 ;; (use-package eglot
 ;;   :ensure t
 ;;   :pin melpa
@@ -768,13 +819,48 @@
 ;;   (add-to-list
 ;;    'eglot-server-programs
 ;;    '(csl-mode . ("language-server"
-;;                  "--csl-std-lib"
-;;                  "/Users/hansbugge/deon-dsl/cslstdlib/StdLib.csl"))))
+;;                  ;; Perhaps not necessary any more
+;;                  ;; "--csl-std-lib"
+;;                  ;; "/Users/hansbugge/deon-dsl/cslstdlib/StdLib.csl"
+;;                  ))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; lsp-mode (alternative to eglot)
+
+(use-package lsp-mode
+  :ensure t
+  :hook ((clojure-mode . lsp)
+         (clojurec-mode . lsp)
+         (clojurescript-mode . lsp))
+  :config
+  (setq lsp-headerline-breadcrumb-enable nil)
+  (setq lsp-auto-configure t)
+  (setq lsp-eldoc-enable-hover nil) ; to avoid conflicting with CIDER eldoc
+  (setq lsp-lens-enable t)
+  (setq lsp-enable-indentation nil) ; clojure-lsp runs cljfmt on indent which is too aggresive
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\.depscache\\'")
+  )
+
+(use-package lsp-ui
+  :ensure t
+  :commands lsp-ui-mode
+  :config
+  (setq lsp-ui-doc-show-with-cursor nil)
+  (setq lsp-ui-doc-show-with-mouse nil)
+  (setq lsp-ui-sideline-show-diagnostics nil)
+  (setq lsp-ui-sideline-show-hover nil)
+  (setq lsp-ui-sideline-show-code-actions nil)
+)
+
+;; (use-package company-lsp
+;;   :ensure t
+;;   :commands company-lsp)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; sml-mode
 (use-package sml-mode
   :ensure t
+  :disabled
   :mode "\\.sml\\'")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -799,15 +885,18 @@
 ;; Gradle
 
 (use-package groovy-mode
-  :ensure t)
+  :ensure t
+  :disabled)
 
 (use-package gradle-mode
-  :ensure t)
+  :ensure t
+  :disabled)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Htmlize
 
 (use-package htmlize
+  :disabled
   :ensure t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -828,13 +917,11 @@
   :bind (("C-M-<backspace>" . kill-backward-up-list))
   :init
   (defun my-clojure-mode-hook ()
-    (electric-pair-local-mode 1)
-    ;; (eldoc-mode 1) ; it doesn't work for some reason - I'll experiment with removing it
     (when (buffer-file-name) (flycheck-mode)))
   (add-hook 'clojure-mode-hook 'my-clojure-mode-hook))
 
 ;; try it everywhere:
-(electric-pair-mode 1)
+;; (electric-pair-mode 1)
 
 (use-package cider
   :ensure t
@@ -846,21 +933,40 @@
   :hook ((clojure-mode . rainbow-delimiters-mode)
          (emacs-lisp-mode . rainbow-delimiters-mode)))
 
+;; Smartparens
+(use-package smartparens :ensure t
+  :hook ((emacs-lisp-mode . smartparens-strict-mode)
+         (scheme-mode . smartparens-strict-mode)
+         (clojure-mode . smartparens-strict-mode)))
+(require 'smartparens-config)
+(smartparens-global-mode +1)
+
+;
+; https://github.com/Fuco1/smartparens/issues/633
+(defun bso/delete-region-if-should (oldfun &rest r)
+  (if (and delete-active-region (region-active-p))
+      (sp-kill-region (mark) (point))
+    (apply oldfun r)))
+(advice-add 'sp-backward-delete-char :around #'bso/delete-region-if-should)
+
 (use-package aggressive-indent
   :ensure t
   :hook ((clojure-mode . aggressive-indent-mode))
-  :config
-  ;; Prevent aggresive-indent from ruining indentation in the rest of
-  ;; the file when accidentally inserting a closing bracket too much
-  (add-to-list
-   'aggressive-indent-dont-indent-if
-   '(and (derived-mode-p 'clojure-mode)
-         (null (thing-at-point 'sexp)))))
+  ;; :config
+  ;; ;; Prevent aggresive-indent from ruining indentation in the rest of
+  ;; ;; the file when accidentally inserting a closing bracket too much
+  ;; (add-to-list
+  ;;  'aggressive-indent-dont-indent-if
+  ;;  '(and (derived-mode-p 'clojure-mode)
+  ;;        (null (thing-at-point 'sexp))))
+  )
 
 (use-package flycheck-clj-kondo
+  :disabled t
   :ensure t)
 
 (use-package clj-refactor
+  :disabled
   :ensure t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -901,3 +1007,18 @@
 
 (use-package dockerfile-mode
   :ensure t)
+
+;;;;;;;;;;;;;;;
+;; keycast-mode
+
+(use-package keycast
+  :ensure t)
+
+;;;;;;;;;;;;;;;
+;; windmove (from prelude)
+;; use shift + arrow keys to switch between visible buffers
+
+(use-package windmove
+  :config
+  (windmove-default-keybindings))
+

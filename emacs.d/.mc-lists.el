@@ -45,12 +45,14 @@
         cua-paste
         cua-resize-rectangle-left
         dabbrev-expand
+        default-indent-new-line
         dired-flag-file-deletion
         down-list
         electric-indent-just-newline
         electric-newline-and-maybe-indent
         electric-pair-delete-pair
         end-of-buffer
+        end-of-defun
         end-of-visual-line
         eri-indent
         eri-indent-reverse
@@ -85,6 +87,7 @@
         org-kill-line
         org-metaleft
         org-metaright
+        org-open-line
         org-self-insert-command
         org-yank
         paredit-backslash
@@ -111,10 +114,18 @@
         sgml-tag
         sh-assignment
         smex
+        sp-backward-delete-char
+        sp-backward-kill-word
+        sp-delete-char
+        sp-kill-hybrid-sexp
+        sp-kill-region
+        sp-kill-whole-line
+        sp-kill-word
         transpose-sexps
         transpose-words
         typescript-insert-and-autoconvert-to-template
         typescript-insert-and-indent
+        view-emacs-problems
         widget-button-press
         yaml-electric-backspace
         yaml-electric-dash-and-dot
@@ -130,8 +141,10 @@
         aquamacs-latex-crossref
         aquamacs-undo
         cider-find-var
+        cider-switch-to-last-clojure-buffer
         cider-switch-to-repl-buffer
         cua-insert-char-rectangle
+        cua-rectangle-mark-mode
         cua-set-rectangle-mark
         describe-key
         eval-defun
@@ -142,6 +155,7 @@
         idris-load-file
         intero-repl-load
         mac-mwheel-scroll
+        magit-status
         mark-whole-buffer
         mouse-buffer-menu
         mouse-drag-mode-line
@@ -151,6 +165,7 @@
         mouse-select-window
         mouse-set-region
         ns-copy-including-secondary
+        ns-do-show-character-palette
         pop-global-mark
         proof-goto-point
         push-button
