@@ -568,8 +568,11 @@
 ;;                   "gitlab.com" forge-gitlab-repository)))
 ;;   :after magit)
 
+(use-package git-modes
+  :ensure t)
+
 (use-package gitignore-mode
-  :ensure t
+  :after #'git-modes
   :mode ("\\.gitignore"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -844,7 +847,7 @@
 ;; lsp-mode (alternative to eglot)
 
 (use-package lsp-mode
-  ;; :disabled
+  :disabled true ;; until we have native arm64 clojure-lsp
   :ensure t
   :hook ((clojure-mode . lsp)
          (clojurec-mode . lsp)
