@@ -164,3 +164,8 @@ compdef _bb_tasks bb
 
 source  <(doctl completion zsh)
 source  <(kubectl completion zsh)
+source  <(helm completion zsh)
+
+# Attempting to install PyICU:
+export PATH="/usr/local/opt/icu4c/bin:/usr/local/opt/icu4c/sbin:$PATH"
+export PKG_CONFIG_PATH="$PKG_CONFIG_PATH:/usr/local/opt/icu4c/lib/pkgconfig"

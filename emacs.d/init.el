@@ -1,6 +1,6 @@
 ;;;;; GNU Emacs init file
 ;;;;; Hans Bugge Grathwohl
-;;;;; hansbugge@gmail.com
+;;;;; mail@hansbugge.dk / hansbugge@gmail.com
 
 ;;;;;;;;;;;;;;;;;;;;;;
 ;;; Global settings
@@ -552,6 +552,22 @@
   (transient-append-suffix 'magit-fetch "m"
     '("x" "reset master to origin/master" magit-reset-master-to-origin)))
 
+;; At the moment (2022-04-19) the following issue prevents me from using forge:
+;; https://github.com/magit/ghub/issues/81
+;; (use-package forge
+;;   :init
+;;   ;; https://magnus.therning.org/2021-12-08-magit_forge-and-self-hosted-gitlab.html
+;;   ;; Dependency:
+;;   ;; brew install gnupg
+;;   (setq
+;;    forge-alist '(("gitlab.deondigital.com" "gitlab.deondigital.com/api/v4"
+;;                   "gitlab.deondigital.com" forge-gitlab-repository)
+;;                  ("github.com" "api.github.com"
+;;                   "github.com" forge-github-repository)
+;;                  ("gitlab.com" "gitlab.com/api/v4"
+;;                   "gitlab.com" forge-gitlab-repository)))
+;;   :after magit)
+
 (use-package gitignore-mode
   :ensure t
   :mode ("\\.gitignore"))
@@ -559,9 +575,9 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Cubical type theory mode
 
-(use-package cubicaltt
-  :load-path "~/cubicaltt"
-  :mode ("\\.ctt\\'" . ctt-mode))
+;; (use-package cubicaltt
+;;   :load-path "~/cubicaltt"
+;;   :mode ("\\.ctt\\'" . ctt-mode))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Ocaml
@@ -828,20 +844,28 @@
 ;; lsp-mode (alternative to eglot)
 
 (use-package lsp-mode
+  ;; :disabled
   :ensure t
   :hook ((clojure-mode . lsp)
          (clojurec-mode . lsp)
-         (clojurescript-mode . lsp))
+         (clojurescript-mode . lsp)
+         (python-mode . lsp))
   :config
   (setq lsp-headerline-breadcrumb-enable nil)
   (setq lsp-auto-configure t)
   (setq lsp-eldoc-enable-hover nil) ; to avoid conflicting with CIDER eldoc
   (setq lsp-lens-enable t)
+  (add-to-list 'lsp-enabled-clients 'clojure-lsp)
   (setq lsp-enable-indentation nil) ; clojure-lsp runs cljfmt on indent which is too aggresive
   (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\.depscache\\'")
+  (setq lsp-signature-auto-activate nil)
+  ;; problem with "Directory [...] does not exist. Create?"  seems to
+  ;; be fixed by blacklisting the depscache from LSP.  I don't yet
+  ;; know how to do that in this config.
   )
 
 (use-package lsp-ui
+  ;; :disabled
   :ensure t
   :commands lsp-ui-mode
   :config
@@ -849,8 +873,7 @@
   (setq lsp-ui-doc-show-with-mouse nil)
   (setq lsp-ui-sideline-show-diagnostics nil)
   (setq lsp-ui-sideline-show-hover nil)
-  (setq lsp-ui-sideline-show-code-actions nil)
-)
+  (setq lsp-ui-sideline-show-code-actions nil))
 
 ;; (use-package company-lsp
 ;;   :ensure t
@@ -926,18 +949,42 @@
 (use-package cider
   :ensure t
   :config
-  (setq cider-offer-to-open-cljs-app-in-browser nil))
+  (setq cider-offer-to-open-cljs-app-in-browser nil)
+  ;; :init
+  ;; (add-hook 'cider-connected-hook #'cider-upgrade-nrepl-connection)
+  )
 
 (use-package rainbow-delimiters
   :ensure t
   :hook ((clojure-mode . rainbow-delimiters-mode)
          (emacs-lisp-mode . rainbow-delimiters-mode)))
 
+(use-package hungry-delete
+  :ensure t
+  :config
+  (setq hungry-delete-join-reluctantly 't)
+  ;; (setq hungry-delete-chars-to-skip " \t\n\r\f\v")
+  ;; (add-to-list hungry-delete-except-modes 'foo-mode)
+  (global-hungry-delete-mode 1))
+
 ;; Smartparens
 (use-package smartparens :ensure t
   :hook ((emacs-lisp-mode . smartparens-strict-mode)
          (scheme-mode . smartparens-strict-mode)
-         (clojure-mode . smartparens-strict-mode)))
+         (clojure-mode . smartparens-strict-mode))
+  :bind (("DEL" . sp-backward-delete-char)
+         ("C-d" . sp-delete-char))
+  :config
+  ;; Automatically insert newlines when pressing enter like so:
+  ;; {|} =RET=>
+  ;; {
+  ;;   |
+  ;; }
+  (dolist (open '("{" "["))
+    (sp-with-modes
+        '(typescript-mode web-mode javascript-mode)
+      (sp-local-pair open nil :post-handlers '(:add ("||\n[i]" "RET"))))))
+
 (require 'smartparens-config)
 (smartparens-global-mode +1)
 
@@ -948,6 +995,34 @@
       (sp-kill-region (mark) (point))
     (apply oldfun r)))
 (advice-add 'sp-backward-delete-char :around #'bso/delete-region-if-should)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; "Smart" backspaces a la intellij
+
+;; ;; Inspired by:
+;; ;; https://emacs.stackexchange.com/a/55220
+;; (defun smart-backspace ()
+;;   (interactive)
+;;   (if (save-excursion
+;;         (goto-char (line-beginning-position))
+;;         (looking-at-p "[[:space:]]*$"))
+;;       (progn
+;;         (join-line)
+;;         (indent-according-to-mode))
+;;       (let ((smart-backspace-mode nil))
+;;         (command-execute (or
+;;                           (key-binding (this-single-command-keys))
+;;                           'delete-backward-char)))))
+
+;; (defvar smart-backspace-mode-map
+;;   (let ((map (make-sparse-keymap)))
+;;     (define-key map (kbd "DEL") 'smart-backspace)
+;;     map))
+
+;; (define-minor-mode smart-backspace-mode
+;;   "When pressing backspace on a blank line, join with previous line.
+;; Otherwise invoke normal backspace function."
+;;   :global t)
 
 (use-package aggressive-indent
   :ensure t
@@ -962,7 +1037,7 @@
   )
 
 (use-package flycheck-clj-kondo
-  :disabled t
+  ;; :disabled t
   :ensure t)
 
 (use-package clj-refactor
@@ -1022,3 +1097,52 @@
   :config
   (windmove-default-keybindings))
 
+;;;;;;;;;;;;;;;
+;; avy
+;; https://github.com/abo-abo/avy
+;; https://karthinks.com/software/avy-can-do-anything/
+
+(use-package avy
+  :ensure t
+  :bind (("C-:" . avy-goto-char-timer)
+         :map clojure-mode-map
+         ("C-:" . avy-goto-char-timer)
+         :map isearch-mode-map
+         ("C-:" . avy-isearch)))
+
+;;;;;;;;;;;;;;;;
+;; python
+(use-package eval-sexp-fu
+  :ensure t)
+
+(use-package elpy
+  :disabled
+  :ensure t
+  :init
+  (eval-sexp-fu-flash-mode)
+  (elpy-enable)
+  :config
+  ;; (setq-default indent-tabs-mode nil)
+  ;; (setq-default tab-width 4)
+  ;; (setq indent-line-function 'insert-tab)
+  (setq python-indent-guess-indent-offset-verbose nil
+        python-shell-interpreter "jupyter"
+        python-shell-interpreter-args "console --existing --simple-prompt"
+        python-shell-prompt-detect-failure-warning nil
+        elpy-get-info-from-shell t)
+  (add-to-list 'python-shell-completion-native-disabled-interpreters
+               "jupyter")
+  :bind (:map elpy-mode-map
+              ("C-c C-v" . nil)
+              ("C-c C-v C-v" . elpy-shell-send-statement)
+              ("C-c C-v C-r" . elpy-shell-send-region-or-buffer)
+              ("C-c C-c" . elpy-shell-send-group)
+              ("C-c C-k" . elpy-shell-send-buffer)))
+
+(use-package lsp-jedi
+  :ensure t
+  :config
+  (with-eval-after-load "lsp-mode"
+    (add-to-list 'lsp-disabled-clients 'pyls)
+    (add-to-list 'lsp-enabled-clients 'jedi))
+  (setq lsp-jedi-executable-command "/Users/hansbugge/.local/bin/jedi-language-server"))

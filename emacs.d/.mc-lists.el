@@ -24,6 +24,7 @@
         autopair-insert-or-skip-quote
         autopair-newline
         autopair-skip-close-maybe
+        backward-kill-sentence
         backward-sexp
         beginning-of-buffer
         beginning-of-defun
@@ -140,6 +141,7 @@
         agda2-popup-menu-3
         aquamacs-latex-crossref
         aquamacs-undo
+        balance-windows
         cider-find-var
         cider-switch-to-last-clojure-buffer
         cider-switch-to-repl-buffer
@@ -175,5 +177,7 @@
         scheme-send-buffer-and-go
         shrink-window-if-larger-than-buffer
         smerge-keep-upper
+        suspend-frame
+        text-scale-adjust
         toggle-input-method
         ))

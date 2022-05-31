@@ -61,14 +61,14 @@
      (output-html "open")))
  '(agda2-include-dirs '("." "/Users/hbugge/Agda/agda-stdlib/src"))
  '(custom-safe-themes
-   '("4c56af497ddf0e30f65a7232a8ee21b3d62a8c332c6b268c81e9ea99b11da0d3" "c433c87bd4b64b8ba9890e8ed64597ea0f8eb0396f4c9a9e01bd20a04d15d358" "2809bcb77ad21312897b541134981282dc455ccd7c14d74cc333b6e549b824f3" "a8245b7cc985a0610d71f9852e9f2767ad1b852c2bdea6f4aadc12cce9c4d6d0" "d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" "bf58fd87997ec29aef8edfdd8f4ab854f5389e9d23a63b0835c497987a6c5084" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" default))
+   '("fee7287586b17efbfda432f05539b58e86e059e78006ce9237b8732fde991b4c" "4c56af497ddf0e30f65a7232a8ee21b3d62a8c332c6b268c81e9ea99b11da0d3" "c433c87bd4b64b8ba9890e8ed64597ea0f8eb0396f4c9a9e01bd20a04d15d358" "2809bcb77ad21312897b541134981282dc455ccd7c14d74cc333b6e549b824f3" "a8245b7cc985a0610d71f9852e9f2767ad1b852c2bdea6f4aadc12cce9c4d6d0" "d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" "bf58fd87997ec29aef8edfdd8f4ab854f5389e9d23a63b0835c497987a6c5084" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" default))
  '(elm-compile-arguments '("--yes" "--warn" "--output=target/elm.js"))
  '(global-auto-revert-mode t)
  '(gradle-mode nil)
  '(haskell-interactive-popup-errors nil)
  '(magit-diff-use-overlays nil)
  '(package-selected-packages
-   '(lsp-ui smartparens company-lsp keycast keycast-mode z3-mode scss-mode wgrep undo-tree yaml-mode rjsx-mode idris-mode gitignore-mode csv-mode nix-buffer nix-mode flycheck-clj-kondo aggressive-indent aggresive-indent aggresive-indent-mode rainbow-delimiters cider clojure-mode clojure prettier-js editorconfig htmlize htlmize groovy-mode gradle-mode gradle company-restclient restclient restclient-mode dhall-mode sml-mode fsharp-mode god-mode helm-hoogle dockerfile-mode attrap-attrap web-mode tide typescript-mode visual-fill-column longlines-mode fill-column-indicator flycheck-elm nyan-mode kotlin-mode ws-butler magit neotree multiple-cursors markdown-mode intero flymake-hlint haskell-mode solarized-theme diff-hl expand-region smex ido-vertical-mode flychdeck-elm))
+   '(forge hungry-delete lsp-jedi elpy eval-sexp-fu avy avu lsp-ui smartparens company-lsp keycast keycast-mode z3-mode scss-mode wgrep undo-tree yaml-mode rjsx-mode idris-mode gitignore-mode csv-mode nix-buffer nix-mode flycheck-clj-kondo aggressive-indent aggresive-indent aggresive-indent-mode rainbow-delimiters cider clojure-mode clojure prettier-js editorconfig htmlize htlmize groovy-mode gradle-mode gradle company-restclient restclient restclient-mode dhall-mode sml-mode fsharp-mode god-mode helm-hoogle dockerfile-mode attrap-attrap web-mode tide typescript-mode visual-fill-column longlines-mode fill-column-indicator flycheck-elm nyan-mode kotlin-mode ws-butler magit neotree multiple-cursors markdown-mode intero flymake-hlint haskell-mode solarized-theme diff-hl expand-region smex ido-vertical-mode flychdeck-elm))
  '(safe-local-variable-values
    '((eval font-lock-add-keywords nil
            `((,(concat "("
