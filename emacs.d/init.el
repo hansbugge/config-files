@@ -71,9 +71,17 @@
                     nil
                     '(("\t" 0 'trailing-whitespace prepend))))))
 
-;; Truncate long lines
+
+(setq-default fill-column 80)
+
 (add-hook 'prog-mode-hook
-          (lambda () (toggle-truncate-lines t)))
+          (lambda ()
+            ;; Truncate long lines
+            (toggle-truncate-lines t)
+            ;; Show ruler at fill-column
+            (display-fill-column-indicator-mode t)
+            ;; Display line numbers in left margin
+            (display-line-numbers-mode t)))
 
 ;; Better commenting-tool
 (use-package comment-dwim-2
@@ -104,6 +112,7 @@
 ;; Shortcuts to certain files using registers
 ;; E.g. `C-x r j e` for visiting init.el
 (set-register ?e '(file . "~/.emacs.d/init.el"))
+(set-register ?i '(file . "~/.emacs.d/init.el"))
 (set-register ?n '(file . "~/notes.org"))
 
 ;; Attempt to avoid crash bug in version
@@ -436,9 +445,7 @@
 
 (use-package visual-fill-column
   :ensure t
-  :defer t
-  :config
-  (setq-default fill-column 120))
+  :defer t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Flyspell
@@ -636,6 +643,11 @@
   :hook ((prog-mode . ws-butler-mode)
          (markdown-mode . ws-butler-mode)
          (yaml-mode . ws-butler-mode)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Right click menus
+
+(context-menu-mode 't)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; company
@@ -941,6 +953,8 @@
   :ensure t
   :after flycheck
   :bind (("C-M-<backspace>" . kill-backward-up-list))
+  :config
+  (setq clojure-toplevel-inside-comment-form 't)
   :init
   (defun my-clojure-mode-hook ()
     (when (buffer-file-name) (flycheck-mode)))
@@ -956,6 +970,9 @@
   ;; :init
   ;; (add-hook 'cider-connected-hook #'cider-upgrade-nrepl-connection)
   )
+
+(use-package cider-eval-sexp-fu
+  :ensure t)
 
 (use-package rainbow-delimiters
   :ensure t

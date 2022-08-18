@@ -180,4 +180,5 @@
         suspend-frame
         text-scale-adjust
         toggle-input-method
+        undo-redo
         ))
