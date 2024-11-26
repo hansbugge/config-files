@@ -25,11 +25,13 @@
         autopair-newline
         autopair-skip-close-maybe
         backward-kill-sentence
+        backward-sentence
         backward-sexp
         beginning-of-buffer
         beginning-of-defun
         cider-eval-defun-at-point
         cider-eval-last-sexp
+        cider-eval-last-sexp-and-replace
         clojure-convert-collection-to-list
         clojure-convert-collection-to-map
         clojure-convert-collection-to-set
@@ -74,6 +76,7 @@
         kill-region
         kill-visual-line
         mark-sexp
+        markdown-cycle
         markdown-exdent-or-delete
         markdown-outdent-or-delete
         mouse-minor-mode-menu
@@ -126,7 +129,10 @@
         transpose-words
         typescript-insert-and-autoconvert-to-template
         typescript-insert-and-indent
+        upcase-region
         view-emacs-problems
+        wdired--self-insert
+        wdired-downcase-word
         widget-button-press
         yaml-electric-backspace
         yaml-electric-dash-and-dot
@@ -143,6 +149,7 @@
         aquamacs-undo
         balance-windows
         cider-find-var
+        cider-load-buffer
         cider-switch-to-last-clojure-buffer
         cider-switch-to-repl-buffer
         cua-insert-char-rectangle
@@ -154,6 +161,7 @@
         ido-find-file
         ido-find-file-read-only
         ido-switch-buffer
+        ido-write-file
         idris-load-file
         intero-repl-load
         mac-mwheel-scroll

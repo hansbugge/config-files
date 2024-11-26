@@ -332,8 +332,8 @@
          (width (- (nth 2 geometry) 35))
          (height (nth 3 geometry))
          (frame (selected-frame)))
-    (set-frame-position frame 0 0)
-    (set-frame-size frame width height 't)))
+    (set-frame-size frame width height 't)
+    (set-frame-position frame 0 0)))
 
 (defun hans/half-size-frame ()
   (interactive)
@@ -341,8 +341,8 @@
          (width (/ (nth 2 geometry) 2))
          (height (nth 3 geometry))
          (frame (selected-frame)))
-    (set-frame-position frame 0 0)
-    (set-frame-size frame width height 't)))
+    (set-frame-size frame width height 't)
+    (set-frame-position frame 0 0)))
 
 ;; Overrides compose-mail-other-frame, but I'll survive
 (global-set-key (kbd "C-x 5 m") #'hans/maximize-frame)
@@ -540,7 +540,9 @@
 
 (use-package neotree
   :ensure t
-  :defer t)
+  :defer t
+  :config
+  (setq neo-window-fixed-size nil))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Git
@@ -552,7 +554,9 @@
   :config
   (defun magit-reset-master-to-origin ()
     (interactive)
-    (magit-branch-reset "master" "origin/master"))
+    (if (magit-ref-exists-p "refs/remote/origin/master")
+        (magit-branch-reset "master" "origin/master")
+      (magit-branch-reset "main" "origin/main")))
   ;;;; For older versions of magit that used magit-popup instead of transient:
   ;; (magit-define-popup-action 'magit-fetch-popup ?x
   ;;   "reset master to origin/master" 'magit-reset-master-to-origin)
@@ -841,7 +845,7 @@
   :disabled
   :ensure t
   :config
-  (add-to-list 'eglot-server-programs '(csl-mode . ("language-server"))))
+  (add-to-list 'eglot-server-programs '(csl-mode . ("language-server"))) )
 
 ;; (use-package eglot
 ;;   :ensure t
@@ -859,7 +863,7 @@
 ;; lsp-mode (alternative to eglot)
 
 (use-package lsp-mode
-  :disabled true ;; until we have native arm64 clojure-lsp
+  ;; :disabled true ;; until we have native arm64 clojure-lsp
   :ensure t
   :hook ((clojure-mode . lsp)
          (clojurec-mode . lsp)
@@ -986,6 +990,13 @@
   ;; (setq hungry-delete-chars-to-skip " \t\n\r\f\v")
   ;; (add-to-list hungry-delete-except-modes 'foo-mode)
   (global-hungry-delete-mode 1))
+
+(use-package apheleia
+  :ensure t
+  :config
+  ;; https://github.com/kkinnear/zprint
+  (push '(zprint . ("zprint" "-w" filepath)) apheleia-formatters)
+  (push '(clojure-mode . zprint) apheleia-mode-alist))
 
 ;; Smartparens
 (use-package smartparens :ensure t
@@ -1166,3 +1177,23 @@
     (add-to-list 'lsp-disabled-clients 'pyls)
     (add-to-list 'lsp-enabled-clients 'jedi))
   (setq lsp-jedi-executable-command "/Users/hansbugge/.local/bin/jedi-language-server"))
+
+;;;;;;;;;;;;;;;;;;;;
+;; GC stuff
+
+(use-package gcmh
+  :ensure t
+  :init (gcmh-mode 1))
+(put 'upcase-region 'disabled nil)
+
+;;;;;;;;;;;;;;;;;;;
+;; Java
+
+(use-package autodisass-java-bytecode
+  :ensure t)
+
+;;;;;;;;;;;;;;;;;;;
+;; Zig
+
+(use-package zig-mode
+  :ensure t)
