@@ -20,6 +20,7 @@
         aquamacs-move-beginning-of-line
         aquamacs-move-end-of-line
         aquamacs-right-char
+        artist-backward-char
         autopair-insert-opening
         autopair-insert-or-skip-quote
         autopair-newline
@@ -29,6 +30,10 @@
         backward-sexp
         beginning-of-buffer
         beginning-of-defun
+        c-electric-colon
+        c-electric-paren
+        c-electric-semi&comma
+        c-indent-line-or-region
         cider-eval-defun-at-point
         cider-eval-last-sexp
         cider-eval-last-sexp-and-replace
@@ -47,10 +52,13 @@
         cua-exchange-point-and-mark
         cua-paste
         cua-resize-rectangle-left
+        cycle-spacing
         dabbrev-expand
         default-indent-new-line
         dired-flag-file-deletion
+        dired-previous-line
         down-list
+        downcase-region
         electric-indent-just-newline
         electric-newline-and-maybe-indent
         electric-pair-delete-pair
@@ -65,6 +73,8 @@
         haskell-indentation-common-electric-command
         haskell-indentation-delete-backward-char
         haskell-indentation-delete-char
+        hungry-delete-backward
+        hungry-delete-forward
         idris-delete-forward-char
         ignore
         increment-number-at-point
@@ -102,6 +112,7 @@
         paredit-forward-delete
         paredit-newline
         paredit-open-round
+        picture-end-of-line
         picture-self-insert
         proof-electric-terminator
         rectangle-mark-mode
@@ -133,6 +144,7 @@
         view-emacs-problems
         wdired--self-insert
         wdired-downcase-word
+        wdired-next-line
         widget-button-press
         yaml-electric-backspace
         yaml-electric-dash-and-dot

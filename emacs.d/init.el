@@ -9,7 +9,9 @@
 (require 'package)
 (setq package-enable-at-startup nil)
 (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
-(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+;; (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") )
+(add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+
 (package-initialize)
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
@@ -96,15 +98,18 @@
 (setq backup-directory-alist
       `((".*" . ,temporary-file-directory)))
 
+;;; 2025-12: disable ido stuff - use vertico instead
 ;; ido-completion
-(icomplete-mode 1)
-(setq ido-enable-flex-matching t)
-(ido-mode 1)
-(use-package ido-vertical-mode
-  :ensure t
-  :config
-  (ido-vertical-mode 1)
-  (setq ido-vertical-define-keys 'C-n-and-C-p-only))
+;; (icomplete-mode 1)
+;; (setq ido-enable-flex-matching t)
+;; (ido-mode 1)
+
+
+;; (use-package ido-vertical-mode
+;;   :ensure t
+;;   :config
+;;   (ido-vertical-mode 1)
+;;   (setq ido-vertical-define-keys 'C-n-and-C-p-only))
 
 ;; The only thing from cua-mode I want:
 (global-set-key (kbd "<C-return>") 'cua-rectangle-mark-mode)
@@ -127,11 +132,49 @@
 (setq-default indicate-empty-lines t)
 
 ;; Smex adds ido to M-x
-(use-package smex
+;; (use-package smex
+;;   :ensure t
+;;   :bind (("M-x" . smex)
+;;          ("M-X" . smex-major-mode-commands)
+;;          ("C-M-x" . execute-extended-command)))
+
+(use-package vertico
   :ensure t
-  :bind (("M-x" . smex)
-         ("M-X" . smex-major-mode-commands)
-         ("C-M-x" . execute-extended-command)))
+  :pin gnu
+  :config
+  (vertico-mode 1)
+  (define-key vertico-map (kbd "DEL")   #'vertico-directory-delete-char)
+  (define-key vertico-map (kbd "M-DEL") #'vertico-directory-delete-word)
+  (define-key vertico-map (kbd "C-w")   #'vertico-directory-delete-word))
+
+;; Persist history over Emacs restarts. Vertico sorts by history position.
+(use-package savehist
+  :init
+  (savehist-mode))
+
+(use-package orderless
+  :ensure t
+  :custom
+  (completion-styles '(orderless basic))
+  (completion-category-overrides '((file (styles partial-completion))))
+  (completion-category-defaults nil) ;; Disable defaults, use our settings
+  (completion-pcm-leading-wildcard t)) ;; Emacs 31: partial-completion behaves like substring
+
+(use-package marginalia
+  :ensure t
+  ;; Bind `marginalia-cycle' locally in the minibuffer.  To make the binding
+  ;; available in the *Completions* buffer, add it to the
+  ;; `completion-list-mode-map'.
+  :bind (:map minibuffer-local-map
+         ("M-A" . marginalia-cycle))
+
+  ;; The :init section is always executed.
+  :init
+
+  ;; Marginalia must be activated in the :init section of use-package such that
+  ;; the mode gets enabled right away. Note that this forces loading the
+  ;; package.
+  (marginalia-mode))
 
 ;; Expand region
 (use-package expand-region
@@ -547,6 +590,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Git
 
+(defvar git-commit-filename-regexp nil)
 (use-package magit
   :ensure t
   :defer t
@@ -716,6 +760,7 @@
   )
 
 (use-package typescript-mode
+  :disabled
   :ensure t
   :mode
   "\\.ts\\'")
@@ -752,6 +797,7 @@
 ;; Prettier
 
 (use-package prettier-js
+  :disabled ;; not in melpa-stable
   :ensure t
   :init
   ;; https://github.com/prettier/prettier-emacs/issues/29
@@ -909,6 +955,7 @@
 ;; restclient-mode
 
 (use-package restclient
+  :disabled ;; not in melpa-stable
   :ensure t
   :commands 'restclient-mode
   :mode ("\\.rest\\'" . restclient-mode)
@@ -920,6 +967,7 @@
   (add-to-list 'restclient-content-type-modes '("application/edn" . clojure-mode)))
 
 (use-package company-restclient
+  :disabled ;; not in melpa-stable
   :ensure t
   :after restclient)
 
@@ -1084,11 +1132,11 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Nix
 
-(use-package nix-mode
-  :ensure t)
+;; (use-package nix-mode
+;;   :ensure t)
 
-(use-package nix-buffer
-  :ensure t)
+;; (use-package nix-buffer
+;;   :ensure t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; csv-mode
@@ -1105,8 +1153,8 @@
 ;;;;;;;;;;;;;
 ;; scss
 
-(use-package scss-mode
-  :ensure t)
+;; (use-package scss-mode
+;;   :ensure t)
 
 ;;;;;;;;;;;;;;;
 ;; dockerfile-mode
@@ -1117,16 +1165,16 @@
 ;;;;;;;;;;;;;;;
 ;; keycast-mode
 
-(use-package keycast
-  :ensure t)
+;; (use-package keycast
+;;   :ensure t)
 
 ;;;;;;;;;;;;;;;
 ;; windmove (from prelude)
 ;; use shift + arrow keys to switch between visible buffers
 
-(use-package windmove
-  :config
-  (windmove-default-keybindings))
+;; (use-package windmove
+;;   :config
+;;   (windmove-default-keybindings))
 
 ;;;;;;;;;;;;;;;
 ;; avy
@@ -1143,8 +1191,8 @@
 
 ;;;;;;;;;;;;;;;;
 ;; python
-(use-package eval-sexp-fu
-  :ensure t)
+;; (use-package eval-sexp-fu
+;;   :ensure t)
 
 (use-package elpy
   :disabled
@@ -1170,13 +1218,13 @@
               ("C-c C-c" . elpy-shell-send-group)
               ("C-c C-k" . elpy-shell-send-buffer)))
 
-(use-package lsp-jedi
-  :ensure t
-  :config
-  (with-eval-after-load "lsp-mode"
-    (add-to-list 'lsp-disabled-clients 'pyls)
-    (add-to-list 'lsp-enabled-clients 'jedi))
-  (setq lsp-jedi-executable-command "/Users/hansbugge/.local/bin/jedi-language-server"))
+;; (use-package lsp-jedi
+;;   :ensure t
+;;   :config
+;;   (with-eval-after-load "lsp-mode"
+;;     (add-to-list 'lsp-disabled-clients 'pyls)
+;;     (add-to-list 'lsp-enabled-clients 'jedi))
+;;   (setq lsp-jedi-executable-command "/Users/hansbugge/.local/bin/jedi-language-server"))
 
 ;;;;;;;;;;;;;;;;;;;;
 ;; GC stuff
