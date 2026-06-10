@@ -142,10 +142,19 @@
   :ensure t
   :pin gnu
   :config
-  (vertico-mode 1)
-  (define-key vertico-map (kbd "DEL")   #'vertico-directory-delete-char)
-  (define-key vertico-map (kbd "M-DEL") #'vertico-directory-delete-word)
-  (define-key vertico-map (kbd "C-w")   #'vertico-directory-delete-word))
+  (vertico-mode 1))
+
+;; Configure directory extension.
+(use-package vertico-directory
+  :after vertico
+  :ensure nil ; part of vertico package
+  ;; More convenient directory navigation commands
+  :bind (:map vertico-map
+              ("RET" . vertico-directory-enter)
+              ("DEL" . vertico-directory-delete-char)
+              ("M-DEL" . vertico-directory-delete-word))
+  ;; Tidy shadowed file names
+  :hook (rfn-eshadow-update-overlay . vertico-directory-tidy))
 
 ;; Persist history over Emacs restarts. Vertico sorts by history position.
 (use-package savehist
